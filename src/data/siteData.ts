@@ -79,6 +79,7 @@ export const navigation = [
       { id: 'about-us', label: { en: 'About Us', ar: 'من نحن' }, href: '/about' },
       { id: 'management', label: { en: 'General Management Word', ar: 'كلمة الإدارة العامة' }, href: '/management' },
       { id: 'social-responsibility', label: { en: 'Social Responsibility', ar: 'المسؤولية الاجتماعية' }, href: '/social-responsibility' },
+      { id: 'medical-directory', label: { en: 'Medical Directory', ar: 'الدليل الطبي' }, href: '/medical-directory' },
     ]
   },
   { 

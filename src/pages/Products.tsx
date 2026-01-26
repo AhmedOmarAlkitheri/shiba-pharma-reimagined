@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, Filter, ExternalLink } from 'lucide-react';
 import Header from '@/components/layout/Header';
@@ -9,16 +10,17 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { featuredProducts, productCategories, uiTranslations } from '@/data/siteData';
+import { productCategories, uiTranslations } from '@/data/siteData';
+import { allProducts } from '@/data/productsData';
 
 const Products: React.FC = () => {
   const { t, isRTL } = useLanguage();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
-  const filteredProducts = featuredProducts.filter(product => {
+  const filteredProducts = allProducts.filter(product => {
     const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = !selectedCategory || product.category.en.toLowerCase().includes(selectedCategory.toLowerCase());
+    const matchesCategory = !selectedCategory || product.categoryId === selectedCategory;
     return matchesSearch && matchesCategory;
   });
 
@@ -55,17 +57,24 @@ const Products: React.FC = () => {
                 >
                   {t({ en: 'All', ar: 'الكل' })}
                 </Button>
-                {productCategories.slice(0, 5).map(category => (
+                {productCategories.map(category => (
                   <Button
                     key={category.id}
-                    variant={selectedCategory === category.name.en ? 'default' : 'outline'}
+                    variant={selectedCategory === category.id ? 'default' : 'outline'}
                     size="sm"
-                    onClick={() => setSelectedCategory(category.name.en)}
+                    onClick={() => setSelectedCategory(category.id)}
                   >
                     {t(category.name)}
                   </Button>
                 ))}
               </div>
+            </div>
+
+            {/* Results Count */}
+            <div className="mt-4 text-center">
+              <Badge variant="secondary">
+                {t({ en: `Showing ${filteredProducts.length} products`, ar: `عرض ${filteredProducts.length} منتج` })}
+              </Badge>
             </div>
           </div>
         </section>
@@ -86,39 +95,41 @@ const Products: React.FC = () => {
                     key={product.id}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.05 }}
+                    transition={{ delay: index * 0.03 }}
                   >
-                    <Card variant="elevated" className="h-full group cursor-pointer overflow-hidden">
-                      <CardContent className="p-0">
-                        {/* Product Image */}
-                        <div className="relative aspect-square bg-gradient-to-br from-secondary to-secondary/50 overflow-hidden">
-                          <img
-                            src={product.image}
-                            alt={product.name}
-                            className="w-full h-full object-contain p-4 group-hover:scale-110 transition-transform duration-500"
-                            onError={(e) => {
-                              (e.target as HTMLImageElement).src = `https://via.placeholder.com/200x200?text=${product.name}`;
-                            }}
-                          />
-                          {/* Overlay */}
-                          <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/10 transition-colors duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
-                            <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg">
-                              <ExternalLink className="w-5 h-5 text-primary" />
+                    <Link to={`/products/${product.id}`}>
+                      <Card variant="elevated" className="h-full group cursor-pointer overflow-hidden">
+                        <CardContent className="p-0">
+                          {/* Product Image */}
+                          <div className="relative aspect-square bg-gradient-to-br from-secondary to-secondary/50 overflow-hidden">
+                            <img
+                              src={product.image}
+                              alt={product.name}
+                              className="w-full h-full object-contain p-4 group-hover:scale-110 transition-transform duration-500"
+                              onError={(e) => {
+                                (e.target as HTMLImageElement).src = `https://via.placeholder.com/200x200?text=${product.name}`;
+                              }}
+                            />
+                            {/* Overlay */}
+                            <div className="absolute inset-0 bg-primary/0 group-hover:bg-primary/10 transition-colors duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
+                              <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-lg">
+                                <ExternalLink className="w-5 h-5 text-primary" />
+                              </div>
                             </div>
                           </div>
-                        </div>
 
-                        {/* Product Info */}
-                        <div className="p-4 text-center">
-                          <h3 className="font-semibold text-foreground mb-2 group-hover:text-accent transition-colors">
-                            {product.name}
-                          </h3>
-                          <Badge variant="secondary" className="text-xs">
-                            {t(product.category)}
-                          </Badge>
-                        </div>
-                      </CardContent>
-                    </Card>
+                          {/* Product Info */}
+                          <div className="p-4 text-center">
+                            <h3 className="font-semibold text-foreground mb-2 group-hover:text-accent transition-colors">
+                              {product.name}
+                            </h3>
+                            <Badge variant="secondary" className="text-xs">
+                              {t(product.category)}
+                            </Badge>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </Link>
                   </motion.div>
                 ))}
               </motion.div>
@@ -161,7 +172,7 @@ const Products: React.FC = () => {
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.05 }}
                   className="bg-white rounded-2xl p-6 text-center shadow-soft hover:shadow-medium transition-shadow cursor-pointer group"
-                  onClick={() => setSelectedCategory(category.name.en)}
+                  onClick={() => setSelectedCategory(category.id)}
                 >
                   <div className="text-2xl font-bold text-accent mb-2">{category.productCount}+</div>
                   <h3 className="font-medium text-foreground group-hover:text-primary transition-colors">
