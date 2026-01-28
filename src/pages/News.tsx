@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Calendar, ArrowRight, ArrowLeft, Share2, Newspaper, Search, Tag } from 'lucide-react';
+import { Calendar, ArrowRight, Share2 } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import PageHeader from '@/components/shared/PageHeader';
@@ -11,7 +11,6 @@ import { newsArticles, uiTranslations } from '@/data/siteData';
 
 const News: React.FC = () => {
   const { t, isRTL } = useLanguage();
-  const ArrowIcon = isRTL ? ArrowLeft : ArrowRight;
 
   return (
     <div className="min-h-screen">
@@ -49,14 +48,14 @@ const News: React.FC = () => {
                       <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                       
                       {/* Share button */}
-                      <button className={`absolute top-4 ${isRTL ? 'left-4' : 'right-4'} w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-white`}>
+                      <button className="absolute top-4 right-4 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 hover:bg-white">
                         <Share2 className="w-4 h-4 text-primary" />
                       </button>
                     </div>
 
-                    <CardContent className={`p-6 ${isRTL ? 'text-right' : ''}`}>
+                    <CardContent className="p-6">
                       {/* Date */}
-                      <div className={`flex items-center gap-2 text-muted-foreground text-sm mb-4 ${isRTL ? 'flex-row-reverse justify-end' : ''}`}>
+                      <div className={`flex items-center gap-2 text-muted-foreground text-sm mb-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
                         <Calendar className="w-4 h-4" />
                         <time>
                           {new Date(article.date).toLocaleDateString(isRTL ? 'ar-YE' : 'en-US', {
@@ -79,9 +78,9 @@ const News: React.FC = () => {
                       </p>
 
                       {/* Read More */}
-                      <Button variant="link" className={`p-0 h-auto group/btn flex items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                      <Button variant="link" className="p-0 h-auto group/btn">
                         {t(uiTranslations.common.readMore)}
-                        <ArrowIcon className="w-4 h-4 transition-transform group-hover/btn:translate-x-1 rtl:group-hover/btn:-translate-x-1" />
+                        <ArrowRight className={`w-4 h-4 transition-transform group-hover/btn:translate-x-1 ${isRTL ? 'rotate-180 group-hover/btn:-translate-x-1' : ''}`} />
                       </Button>
                     </CardContent>
                   </Card>
@@ -112,12 +111,12 @@ const News: React.FC = () => {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className={`bg-white rounded-2xl p-6 shadow-soft ${isRTL ? 'text-right' : ''}`}
+                className="bg-white rounded-2xl p-6 shadow-soft"
               >
                 <h3 className="text-lg font-bold text-primary mb-4">
                   {t(uiTranslations.common.share)}
                 </h3>
-                <div className={`flex gap-3 ${isRTL ? 'justify-end' : ''}`}>
+                <div className="flex gap-3">
                   {['facebook', 'twitter', 'linkedin', 'whatsapp'].map((social) => (
                     <button
                       key={social}
@@ -136,17 +135,16 @@ const News: React.FC = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.1 }}
-                className={`bg-white rounded-2xl p-6 shadow-soft ${isRTL ? 'text-right' : ''}`}
+                className="bg-white rounded-2xl p-6 shadow-soft"
               >
-                <h3 className={`text-lg font-bold text-primary mb-4 flex items-center gap-2 ${isRTL ? 'flex-row-reverse justify-end' : ''}`}>
-                  <Search className="w-5 h-5" />
+                <h3 className="text-lg font-bold text-primary mb-4">
                   {t({ en: 'Search', ar: 'البحث' })}
                 </h3>
                 <div className="relative">
                   <input
                     type="text"
                     placeholder={t(uiTranslations.common.search)}
-                    className={`w-full px-4 py-3 border border-border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all ${isRTL ? 'text-right' : ''}`}
+                    className="w-full px-4 py-3 border border-border rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
                   />
                 </div>
               </motion.div>
@@ -157,10 +155,9 @@ const News: React.FC = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.2 }}
-                className={`bg-white rounded-2xl p-6 shadow-soft ${isRTL ? 'text-right' : ''}`}
+                className="bg-white rounded-2xl p-6 shadow-soft"
               >
-                <h3 className={`text-lg font-bold text-primary mb-4 flex items-center gap-2 ${isRTL ? 'flex-row-reverse justify-end' : ''}`}>
-                  <Tag className="w-5 h-5" />
+                <h3 className="text-lg font-bold text-primary mb-4">
                   {t({ en: 'Categories', ar: 'التصنيفات' })}
                 </h3>
                 <div className="space-y-2">
@@ -171,7 +168,7 @@ const News: React.FC = () => {
                   ].map((cat, i) => (
                     <button
                       key={i}
-                      className={`block w-full ${isRTL ? 'text-right' : 'text-left'} px-4 py-2 rounded-lg hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground`}
+                      className="block w-full text-left px-4 py-2 rounded-lg hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground"
                     >
                       {t(cat)}
                     </button>

@@ -1,7 +1,5 @@
-import React, { forwardRef } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
 import { motion } from 'framer-motion';
-import { Home, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Translation } from '@/data/siteData';
 
@@ -10,12 +8,11 @@ interface PageHeaderProps {
   breadcrumbs?: { label: Translation; href?: string }[];
 }
 
-const PageHeader = forwardRef<HTMLElement, PageHeaderProps>(({ title, breadcrumbs }, ref) => {
+const PageHeader: React.FC<PageHeaderProps> = ({ title, breadcrumbs }) => {
   const { t, isRTL } = useLanguage();
-  const Separator = isRTL ? ChevronLeft : ChevronRight;
 
   return (
-    <section ref={ref} className="relative py-24 md:py-32 overflow-hidden">
+    <section className="relative py-24 md:py-32 overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary to-navy-dark">
         {/* Decorative Elements */}
@@ -46,23 +43,20 @@ const PageHeader = forwardRef<HTMLElement, PageHeaderProps>(({ title, breadcrumb
           {/* Breadcrumbs */}
           {breadcrumbs && (
             <nav className="mb-4">
-              <ol className={`flex items-center gap-2 text-white/70 text-sm ${isRTL ? 'flex-row-reverse justify-end' : ''}`}>
+              <ol className={`flex items-center gap-2 text-white/70 text-sm ${isRTL ? 'flex-row-reverse' : ''}`}>
                 <li>
-                  <Link to="/" className={`hover:text-white transition-colors flex items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                    <Home className="w-4 h-4" />
+                  <a href="/" className="hover:text-white transition-colors">
                     {t({ en: 'Home', ar: 'الرئيسية' })}
-                  </Link>
+                  </a>
                 </li>
                 {breadcrumbs.map((crumb, index) => (
                   <React.Fragment key={index}>
-                    <li>
-                      <Separator className="w-4 h-4" />
-                    </li>
+                    <li className={isRTL ? 'rotate-180' : ''}>/</li>
                     <li>
                       {crumb.href ? (
-                        <Link to={crumb.href} className="hover:text-white transition-colors">
+                        <a href={crumb.href} className="hover:text-white transition-colors">
                           {t(crumb.label)}
-                        </Link>
+                        </a>
                       ) : (
                         <span className="text-white">{t(crumb.label)}</span>
                       )}
@@ -93,8 +87,6 @@ const PageHeader = forwardRef<HTMLElement, PageHeaderProps>(({ title, breadcrumb
       </div>
     </section>
   );
-});
-
-PageHeader.displayName = 'PageHeader';
+};
 
 export default PageHeader;

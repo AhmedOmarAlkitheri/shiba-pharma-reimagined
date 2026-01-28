@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Crosshair, Eye, Target, Award, Users, CheckCircle, Sparkles, Beaker, Shield, Heart } from 'lucide-react';
+import { Mail, Target, Eye, Award, Users, CheckCircle, Sparkles } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import PageHeader from '@/components/shared/PageHeader';
@@ -12,16 +12,16 @@ const About: React.FC = () => {
   const { t, isRTL } = useLanguage();
 
   const aboutCards = [
-    { icon: Crosshair, ...aboutContent.mission, color: 'bg-accent' },
+    { icon: Mail, ...aboutContent.mission, color: 'bg-accent' },
     { icon: Eye, ...aboutContent.vision, color: 'bg-teal' },
     { icon: Target, ...aboutContent.goals, color: 'bg-gold' },
-    { icon: Heart, ...aboutContent.values, color: 'bg-primary' },
-    { icon: Shield, ...aboutContent.standards, color: 'bg-accent' },
+    { icon: Sparkles, ...aboutContent.values, color: 'bg-primary' },
+    { icon: CheckCircle, ...aboutContent.standards, color: 'bg-accent' },
     { icon: Users, ...aboutContent.cadres, color: 'bg-teal' },
   ];
 
   const stats = [
-    { value: companyInfo.productsCount, label: uiTranslations.stats.medicalProducts, icon: Beaker },
+    { value: companyInfo.productsCount, label: uiTranslations.stats.medicalProducts, icon: Award },
     { value: companyInfo.agentsCount, label: uiTranslations.stats.agents, icon: Users },
     { value: companyInfo.awardsCount, label: uiTranslations.stats.awards, icon: Award },
   ];
@@ -42,7 +42,7 @@ const About: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className={`max-w-4xl mx-auto text-center ${isRTL ? 'text-right' : ''}`}
+              className="max-w-4xl mx-auto text-center"
             >
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-primary mb-8">
                 [ {t(companyInfo.name)} {t({ en: 'company for Pharmaceutical industries', ar: 'للصناعات الدوائية' })} ]
@@ -67,8 +67,8 @@ const About: React.FC = () => {
                   transition={{ delay: index * 0.1 }}
                 >
                   <Card variant="elevated" className="h-full group hover:shadow-xl transition-all duration-500">
-                    <CardContent className={`p-8 ${isRTL ? 'text-right' : ''}`}>
-                      <div className={`w-16 h-16 ${card.color} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 ${isRTL ? 'mr-0 ml-auto' : ''}`}>
+                    <CardContent className="p-8">
+                      <div className={`w-16 h-16 ${card.color} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
                         <card.icon className="w-8 h-8 text-white" />
                       </div>
                       <h3 className="text-xl font-bold text-primary mb-4">{t(card.title)}</h3>
@@ -114,7 +114,7 @@ const About: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className={`mb-12 ${isRTL ? 'text-right' : ''}`}
+              className="mb-12"
             >
               <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">
                 {t(uiTranslations.sections.productionManagement)}
@@ -135,7 +135,7 @@ const About: React.FC = () => {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
-                  className={`flex items-start gap-4 p-4 bg-secondary/50 rounded-xl hover:bg-secondary transition-colors ${isRTL ? 'flex-row-reverse text-right' : ''}`}
+                  className="flex items-start gap-4 p-4 bg-secondary/50 rounded-xl hover:bg-secondary transition-colors"
                 >
                   <div className="w-3 h-3 bg-accent rounded-full mt-2 flex-shrink-0" />
                   <p className="text-foreground">{t(line)}</p>
@@ -147,7 +147,7 @@ const About: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className={`mt-12 p-6 bg-accent/10 border border-accent/20 rounded-2xl ${isRTL ? 'text-right' : ''}`}
+              className="mt-12 p-6 bg-accent/10 border border-accent/20 rounded-2xl"
             >
               <p className="text-foreground leading-relaxed">
                 {t({

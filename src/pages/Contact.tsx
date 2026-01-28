@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { MapPin, Phone, Mail, Send, Building2, Factory, Globe, ArrowLeft, ArrowRight } from 'lucide-react';
+import { MapPin, Phone, Mail, Send, Building2, Factory } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import PageHeader from '@/components/shared/PageHeader';
@@ -13,7 +13,6 @@ import { contactInfo, uiTranslations } from '@/data/siteData';
 
 const Contact: React.FC = () => {
   const { t, isRTL } = useLanguage();
-  const ArrowIcon = isRTL ? ArrowLeft : ArrowRight;
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -69,8 +68,8 @@ const Contact: React.FC = () => {
                   transition={{ delay: index * 0.1 }}
                 >
                   <Card className="bg-white shadow-xl hover:shadow-2xl transition-shadow duration-300 border-0">
-                    <CardContent className={`p-8 text-center ${isRTL ? 'text-right' : ''}`}>
-                      <div className={`w-16 h-16 mx-auto mb-6 bg-secondary rounded-2xl flex items-center justify-center ${isRTL ? 'mx-0 mr-auto ml-auto' : ''}`}>
+                    <CardContent className="p-8 text-center">
+                      <div className={`w-16 h-16 mx-auto mb-6 bg-secondary rounded-2xl flex items-center justify-center`}>
                         <card.icon className={`w-8 h-8 ${card.color}`} />
                       </div>
                       <h3 className="text-lg font-semibold text-primary mb-3">{t(card.title)}</h3>
@@ -88,7 +87,7 @@ const Contact: React.FC = () => {
         {/* Contact Form and Info */}
         <section className="py-16 bg-secondary/30">
           <div className="section-container">
-            <div className={`grid grid-cols-1 lg:grid-cols-2 gap-12 ${isRTL ? 'direction-rtl' : ''}`}>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
               {/* Contact Form */}
               <motion.div
                 initial={{ opacity: 0, x: isRTL ? 30 : -30 }}
@@ -96,7 +95,7 @@ const Contact: React.FC = () => {
                 viewport={{ once: true }}
               >
                 <Card className="shadow-xl border-0">
-                  <CardContent className={`p-8 ${isRTL ? 'text-right' : ''}`}>
+                  <CardContent className="p-8">
                     <h2 className="text-2xl font-bold text-primary mb-6">
                       {t(uiTranslations.sections.contactUs)}
                     </h2>
@@ -107,7 +106,7 @@ const Contact: React.FC = () => {
                           value={formData.name}
                           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                           required
-                          className={`h-12 ${isRTL ? 'text-right' : ''}`}
+                          className="h-12"
                         />
                       </div>
                       <div>
@@ -117,7 +116,7 @@ const Contact: React.FC = () => {
                           value={formData.email}
                           onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                           required
-                          className={`h-12 ${isRTL ? 'text-right' : ''}`}
+                          className="h-12"
                         />
                       </div>
                       <div>
@@ -126,7 +125,7 @@ const Contact: React.FC = () => {
                           value={formData.subject}
                           onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
                           required
-                          className={`h-12 ${isRTL ? 'text-right' : ''}`}
+                          className="h-12"
                         />
                       </div>
                       <div>
@@ -136,12 +135,12 @@ const Contact: React.FC = () => {
                           onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                           required
                           rows={5}
-                          className={`resize-none ${isRTL ? 'text-right' : ''}`}
+                          className="resize-none"
                         />
                       </div>
-                      <Button type="submit" variant="navy" size="lg" className={`w-full group flex items-center justify-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                      <Button type="submit" variant="navy" size="lg" className="w-full group">
                         {t(uiTranslations.common.send)}
-                        <ArrowIcon className="w-5 h-5 transition-transform group-hover:translate-x-1 rtl:group-hover:-translate-x-1" />
+                        <Send className={`w-5 h-5 transition-transform group-hover:translate-x-1 ${isRTL ? 'rotate-180 group-hover:-translate-x-1' : ''}`} />
                       </Button>
                     </form>
                   </CardContent>
@@ -156,8 +155,8 @@ const Contact: React.FC = () => {
                 className="space-y-8"
               >
                 {/* Factory Address */}
-                <div className={`bg-white rounded-2xl p-6 shadow-soft ${isRTL ? 'text-right' : ''}`}>
-                  <div className={`flex items-start gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <div className="bg-white rounded-2xl p-6 shadow-soft">
+                  <div className="flex items-start gap-4">
                     <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0">
                       <Factory className="w-6 h-6 text-primary" />
                     </div>
@@ -182,8 +181,8 @@ const Contact: React.FC = () => {
                 </div>
 
                 {/* Marketing Address */}
-                <div className={`bg-white rounded-2xl p-6 shadow-soft ${isRTL ? 'text-right' : ''}`}>
-                  <div className={`flex items-start gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <div className="bg-white rounded-2xl p-6 shadow-soft">
+                  <div className="flex items-start gap-4">
                     <div className="w-12 h-12 bg-accent/10 rounded-xl flex items-center justify-center flex-shrink-0">
                       <Building2 className="w-6 h-6 text-accent" />
                     </div>
@@ -208,8 +207,8 @@ const Contact: React.FC = () => {
                 </div>
 
                 {/* Email */}
-                <div className={`bg-white rounded-2xl p-6 shadow-soft ${isRTL ? 'text-right' : ''}`}>
-                  <div className={`flex items-start gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <div className="bg-white rounded-2xl p-6 shadow-soft">
+                  <div className="flex items-start gap-4">
                     <div className="w-12 h-12 bg-teal/10 rounded-xl flex items-center justify-center flex-shrink-0">
                       <Mail className="w-6 h-6 text-teal" />
                     </div>
@@ -222,28 +221,6 @@ const Contact: React.FC = () => {
                         className="text-accent hover:underline"
                       >
                         {contactInfo.email}
-                      </a>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Website */}
-                <div className={`bg-white rounded-2xl p-6 shadow-soft ${isRTL ? 'text-right' : ''}`}>
-                  <div className={`flex items-start gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                    <div className="w-12 h-12 bg-gold/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                      <Globe className="w-6 h-6 text-gold" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-primary mb-2">
-                        {t({ en: 'Website', ar: 'الموقع الإلكتروني' })}
-                      </h3>
-                      <a
-                        href="https://shibapharma.com"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-accent hover:underline"
-                      >
-                        www.shibapharma.com
                       </a>
                     </div>
                   </div>

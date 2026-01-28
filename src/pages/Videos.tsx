@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { PlayCircle, Calendar, Award, CheckCircle } from 'lucide-react';
+import { Play, Calendar } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import PageHeader from '@/components/shared/PageHeader';
@@ -31,12 +31,12 @@ const Videos: React.FC = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
-                  className={`grid grid-cols-1 lg:grid-cols-2 gap-8 items-center`}
+                  className={`grid grid-cols-1 lg:grid-cols-2 gap-8 items-center ${index % 2 === 1 ? 'lg:flex-row-reverse' : ''}`}
                 >
                   {/* Content */}
-                  <div className={`${isRTL ? 'text-right' : ''} ${index % 2 === 1 && !isRTL ? 'lg:order-2' : ''} ${index % 2 === 0 && isRTL ? 'lg:order-2' : ''}`}>
+                  <div className={index % 2 === 1 ? 'lg:order-2' : ''}>
                     <h2 className="text-3xl font-bold text-primary mb-4">{t(video.title)}</h2>
-                    <div className={`flex items-center gap-2 text-muted-foreground text-sm mb-6 ${isRTL ? 'flex-row-reverse justify-end' : ''}`}>
+                    <div className="flex items-center gap-2 text-muted-foreground text-sm mb-6">
                       <Calendar className="w-4 h-4" />
                       <time>
                         {new Date(video.date).toLocaleDateString(isRTL ? 'ar-YE' : 'en-US', {
@@ -51,7 +51,7 @@ const Videos: React.FC = () => {
                   </div>
 
                   {/* Video Thumbnail */}
-                  <div className={`relative ${index % 2 === 1 && !isRTL ? 'lg:order-1' : ''} ${index % 2 === 0 && isRTL ? 'lg:order-1' : ''}`}>
+                  <div className={`relative ${index % 2 === 1 ? 'lg:order-1' : ''}`}>
                     <Card variant="elevated" className="overflow-hidden group cursor-pointer">
                       <div className="relative aspect-video">
                         <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-navy-dark/40 rounded-full w-64 h-64 mx-auto my-auto flex items-center justify-center overflow-hidden">
@@ -70,7 +70,7 @@ const Videos: React.FC = () => {
                         {/* Play Button */}
                         <div className="absolute inset-0 flex items-center justify-center">
                           <button className="w-20 h-20 bg-white rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform duration-300">
-                            <PlayCircle className="w-12 h-12 text-primary" />
+                            <Play className="w-8 h-8 text-primary fill-primary ml-1" />
                           </button>
                         </div>
                       </div>
@@ -89,26 +89,16 @@ const Videos: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className={`text-center max-w-4xl mx-auto ${isRTL ? 'text-right' : ''}`}
+              className="text-center max-w-4xl mx-auto"
             >
-              <div className="flex justify-center mb-6">
-                <Award className="w-16 h-16" />
-              </div>
               <h2 className="text-3xl font-bold mb-6">
                 {t({ en: 'Our Certifications', ar: 'شهاداتنا' })}
               </h2>
               <div className="space-y-4 text-white/80">
-                {[
-                  { en: 'First company to obtain WHO-GMP certification in 2000', ar: 'أول شركة تحصل على شهادة WHO-GMP عام 2000' },
-                  { en: 'First company to obtain ISO 9001:2000 certification', ar: 'أول شركة تحصل على شهادة ISO 9001:2000' },
-                  { en: 'Later obtained ISO 9001:2004 certification', ar: 'حصلت لاحقاً على شهادة ISO 9001:2004' },
-                  { en: 'Later obtained ISO 9001:2008 certification', ar: 'حصلت لاحقاً على شهادة ISO 9001:2008' },
-                ].map((cert, i) => (
-                  <p key={i} className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse justify-end' : ''}`}>
-                    <CheckCircle className="w-5 h-5 text-accent flex-shrink-0" />
-                    {t(cert)}
-                  </p>
-                ))}
+                <p>• {t({ en: 'First company to obtain WHO-GMP certification in 2000', ar: 'أول شركة تحصل على شهادة WHO-GMP عام 2000' })}</p>
+                <p>• {t({ en: 'First company to obtain ISO 9001:2000 certification', ar: 'أول شركة تحصل على شهادة ISO 9001:2000' })}</p>
+                <p>• {t({ en: 'Later obtained ISO 9001:2004 certification', ar: 'حصلت لاحقاً على شهادة ISO 9001:2004' })}</p>
+                <p>• {t({ en: 'Later obtained ISO 9001:2008 certification', ar: 'حصلت لاحقاً على شهادة ISO 9001:2008' })}</p>
               </div>
             </motion.div>
           </div>

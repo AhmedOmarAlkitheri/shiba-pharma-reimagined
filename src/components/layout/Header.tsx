@@ -1,13 +1,13 @@
-import React, { useState, useEffect, forwardRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Phone, ChevronDown, Globe, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Menu, X, Phone, ChevronDown, Globe } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { navigation, companyInfo, contactInfo } from '@/data/siteData';
 import logo from '@/assets/logo.jfif';
 
-const Header = forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>((props, ref) => {
+const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
@@ -26,43 +26,37 @@ const Header = forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>((props
     setLanguage(language === 'en' ? 'ar' : 'en');
   };
 
-  const ChevronIcon = isRTL ? ChevronLeft : ChevronRight;
-
   return (
     <>
       {/* Top Bar */}
       <div className="bg-primary text-primary-foreground py-2 text-sm">
-        <div className="section-container">
-          <div className={`flex justify-between items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
-            <div className={`flex items-center gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
-              <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                <Phone className="w-4 h-4" />
-                <span>{t({ en: 'Industry:', ar: 'المصنع:' })} {contactInfo.industry}</span>
-                <span className="mx-2">|</span>
-                <span>{t({ en: 'Marketing:', ar: 'التسويق:' })} {contactInfo.marketingPhone}</span>
-              </div>
+        <div className="section-container flex justify-between items-center">
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
+              <Phone className="w-4 h-4" />
+              <span>{t({ en: 'Industry:', ar: 'المصنع:' })} {contactInfo.industry}</span>
+              <span className="mx-2">|</span>
+              <span>{t({ en: 'Marketing:', ar: 'التسويق:' })} {contactInfo.marketingPhone}</span>
             </div>
-            <div className="hidden md:block">
-              <span className="font-medium">{t(companyInfo.fullName)}</span>
-            </div>
+          </div>
+          <div className="hidden md:block">
+            <span className="font-medium">{t(companyInfo.fullName)}</span>
           </div>
         </div>
       </div>
 
       {/* Main Header */}
       <header
-        ref={ref}
         className={`sticky top-0 z-50 transition-all duration-300 ${
           isScrolled
             ? 'bg-white/95 backdrop-blur-lg shadow-lg'
             : 'bg-white'
         }`}
-        {...props}
       >
         <div className="section-container">
-          <div className={`flex items-center justify-between h-20 ${isRTL ? 'flex-row-reverse' : ''}`}>
+          <div className="flex items-center justify-between h-20">
             {/* Logo */}
-            <Link to="/" className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
+            <Link to="/" className="flex items-center gap-3">
               <motion.img
                 src={logo}
                 alt="Shiba Pharma"
@@ -73,7 +67,7 @@ const Header = forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>((props
             </Link>
 
             {/* Desktop Navigation */}
-            <nav className={`hidden lg:flex items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
+            <nav className="hidden lg:flex items-center gap-1">
               {navigation.map((item) => (
                 <div
                   key={item.id}
@@ -83,7 +77,7 @@ const Header = forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>((props
                 >
                   <Link
                     to={item.href}
-                    className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 flex items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''} ${
+                    className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 flex items-center gap-1 ${
                       location.pathname === item.href
                         ? 'text-accent bg-accent/10'
                         : 'text-foreground hover:text-accent hover:bg-accent/5'
@@ -101,13 +95,13 @@ const Header = forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>((props
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: 10 }}
                         transition={{ duration: 0.2 }}
-                        className={`absolute top-full ${isRTL ? 'right-0' : 'left-0'} mt-2 w-56 bg-white rounded-xl shadow-xl border border-border/50 overflow-hidden z-50`}
+                        className={`absolute top-full ${isRTL ? 'right-0' : 'left-0'} mt-2 w-56 bg-white rounded-xl shadow-xl border border-border/50 overflow-hidden`}
                       >
                         {item.submenu.map((subItem) => (
                           <Link
                             key={subItem.id}
                             to={subItem.href}
-                            className={`block px-4 py-3 text-foreground hover:bg-accent/10 hover:text-accent transition-colors ${isRTL ? 'text-right' : 'text-left'}`}
+                            className="block px-4 py-3 text-foreground hover:bg-accent/10 hover:text-accent transition-colors"
                           >
                             {t(subItem.label)}
                           </Link>
@@ -120,13 +114,13 @@ const Header = forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>((props
             </nav>
 
             {/* Right Actions */}
-            <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
+            <div className="flex items-center gap-3">
               {/* Language Toggle */}
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={toggleLanguage}
-                className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}
+                className="flex items-center gap-2"
               >
                 <Globe className="w-4 h-4" />
                 <span>{language === 'en' ? 'عربي' : 'EN'}</span>
@@ -159,7 +153,7 @@ const Header = forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>((props
                   <div key={item.id}>
                     <Link
                       to={item.href}
-                      className={`block py-3 text-foreground hover:text-accent font-medium ${isRTL ? 'text-right' : 'text-left'}`}
+                      className="block py-3 text-foreground hover:text-accent font-medium"
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
                       {t(item.label)}
@@ -170,7 +164,7 @@ const Header = forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>((props
                           <Link
                             key={subItem.id}
                             to={subItem.href}
-                            className={`block py-2 text-muted-foreground hover:text-accent ${isRTL ? 'text-right' : 'text-left'}`}
+                            className="block py-2 text-muted-foreground hover:text-accent"
                             onClick={() => setIsMobileMenuOpen(false)}
                           >
                             {t(subItem.label)}
@@ -187,8 +181,6 @@ const Header = forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>((props
       </header>
     </>
   );
-});
-
-Header.displayName = 'Header';
+};
 
 export default Header;
