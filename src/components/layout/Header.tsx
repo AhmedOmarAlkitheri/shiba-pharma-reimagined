@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, forwardRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Phone, ChevronDown, Globe } from 'lucide-react';
+import { Menu, X, Phone, ChevronDown, Globe, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { navigation, companyInfo, contactInfo } from '@/data/siteData';
 import logo from '@/assets/logo.jfif';
 
-const Header: React.FC = () => {
+const Header = forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>((props, ref) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSubmenu, setActiveSubmenu] = useState<string | null>(null);
@@ -26,37 +26,43 @@ const Header: React.FC = () => {
     setLanguage(language === 'en' ? 'ar' : 'en');
   };
 
+  const ChevronIcon = isRTL ? ChevronLeft : ChevronRight;
+
   return (
     <>
       {/* Top Bar */}
       <div className="bg-primary text-primary-foreground py-2 text-sm">
-        <div className="section-container flex justify-between items-center">
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2">
-              <Phone className="w-4 h-4" />
-              <span>{t({ en: 'Industry:', ar: 'المصنع:' })} {contactInfo.industry}</span>
-              <span className="mx-2">|</span>
-              <span>{t({ en: 'Marketing:', ar: 'التسويق:' })} {contactInfo.marketingPhone}</span>
+        <div className="section-container">
+          <div className={`flex justify-between items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
+            <div className={`flex items-center gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <Phone className="w-4 h-4" />
+                <span>{t({ en: 'Industry:', ar: 'المصنع:' })} {contactInfo.industry}</span>
+                <span className="mx-2">|</span>
+                <span>{t({ en: 'Marketing:', ar: 'التسويق:' })} {contactInfo.marketingPhone}</span>
+              </div>
             </div>
-          </div>
-          <div className="hidden md:block">
-            <span className="font-medium">{t(companyInfo.fullName)}</span>
+            <div className="hidden md:block">
+              <span className="font-medium">{t(companyInfo.fullName)}</span>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Main Header */}
       <header
+        ref={ref}
         className={`sticky top-0 z-50 transition-all duration-300 ${
           isScrolled
             ? 'bg-white/95 backdrop-blur-lg shadow-lg'
             : 'bg-white'
         }`}
+        {...props}
       >
         <div className="section-container">
-          <div className="flex items-center justify-between h-20">
+          <div className={`flex items-center justify-between h-20 ${isRTL ? 'flex-row-reverse' : ''}`}>
             {/* Logo */}
-            <Link to="/" className="flex items-center gap-3">
+            <Link to="/" className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
               <motion.img
                 src={logo}
                 alt="Shiba Pharma"
@@ -67,7 +73,7 @@ const Header: React.FC = () => {
             </Link>
 
             {/* Desktop Navigation */}
-            <nav className="hidden lg:flex items-center gap-1">
+            <nav className={`hidden lg:flex items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
               {navigation.map((item) => (
                 <div
                   key={item.id}
@@ -77,7 +83,7 @@ const Header: React.FC = () => {
                 >
                   <Link
                     to={item.href}
-                    className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 flex items-center gap-1 ${
+                    className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 flex items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''} ${
                       location.pathname === item.href
                         ? 'text-accent bg-accent/10'
                         : 'text-foreground hover:text-accent hover:bg-accent/5'
@@ -95,13 +101,13 @@ const Header: React.FC = () => {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: 10 }}
                         transition={{ duration: 0.2 }}
-                        className={`absolute top-full ${isRTL ? 'right-0' : 'left-0'} mt-2 w-56 bg-white rounded-xl shadow-xl border border-border/50 overflow-hidden`}
+                        className={`absolute top-full ${isRTL ? 'right-0' : 'left-0'} mt-2 w-56 bg-white rounded-xl shadow-xl border border-border/50 overflow-hidden z-50`}
                       >
                         {item.submenu.map((subItem) => (
                           <Link
                             key={subItem.id}
                             to={subItem.href}
-                            className="block px-4 py-3 text-foreground hover:bg-accent/10 hover:text-accent transition-colors"
+                            className={`block px-4 py-3 text-foreground hover:bg-accent/10 hover:text-accent transition-colors ${isRTL ? 'text-right' : 'text-left'}`}
                           >
                             {t(subItem.label)}
                           </Link>
@@ -114,13 +120,13 @@ const Header: React.FC = () => {
             </nav>
 
             {/* Right Actions */}
-            <div className="flex items-center gap-3">
+            <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
               {/* Language Toggle */}
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={toggleLanguage}
-                className="flex items-center gap-2"
+                className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}
               >
                 <Globe className="w-4 h-4" />
                 <span>{language === 'en' ? 'عربي' : 'EN'}</span>
@@ -153,7 +159,7 @@ const Header: React.FC = () => {
                   <div key={item.id}>
                     <Link
                       to={item.href}
-                      className="block py-3 text-foreground hover:text-accent font-medium"
+                      className={`block py-3 text-foreground hover:text-accent font-medium ${isRTL ? 'text-right' : 'text-left'}`}
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
                       {t(item.label)}
@@ -164,7 +170,7 @@ const Header: React.FC = () => {
                           <Link
                             key={subItem.id}
                             to={subItem.href}
-                            className="block py-2 text-muted-foreground hover:text-accent"
+                            className={`block py-2 text-muted-foreground hover:text-accent ${isRTL ? 'text-right' : 'text-left'}`}
                             onClick={() => setIsMobileMenuOpen(false)}
                           >
                             {t(subItem.label)}
@@ -181,6 +187,8 @@ const Header: React.FC = () => {
       </header>
     </>
   );
-};
+});
+
+Header.displayName = 'Header';
 
 export default Header;
