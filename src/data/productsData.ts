@@ -104,7 +104,7 @@ export const allProducts: Product[] = [
     image: 'https://shibapharma.com/media/2/conversions/fenirgic-Medium-Image.jpg',
     description: { 
       en: 'Antihistamine medication for allergic conditions.',
-      ar: 'دواء مضاد للهيستامين للحالات التحسسية.'
+      ar: 'دواء مضاد للهيستامين للحالات التحسسية. '
     },
     composition: {
       en: 'Each 5ml contains Chlorpheniramine Maleate 2mg',
