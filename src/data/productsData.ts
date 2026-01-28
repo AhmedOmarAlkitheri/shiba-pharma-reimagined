@@ -23,7 +23,7 @@ export const allProducts: Product[] = [
     name: 'AMRISTAR',
     categoryId: 'analgesics',
     category: { en: 'Analgesics', ar: 'المسكنات' },
-    image: 'https://shibapharma.com/media/838/conversions/images-Medium-Image.jpg',
+    image: 'https://shibapharma.com/media/758/07-Amrystar.jpg',
     description: { 
       en: 'Pain relief medication used for the treatment of mild to moderate pain and fever.',
       ar: 'دواء مسكن للآلام يستخدم لعلاج الآلام الخفيفة إلى المتوسطة والحمى.'
