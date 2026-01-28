@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { Home, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Translation } from '@/data/siteData';
 
@@ -8,11 +10,12 @@ interface PageHeaderProps {
   breadcrumbs?: { label: Translation; href?: string }[];
 }
 
-const PageHeader: React.FC<PageHeaderProps> = ({ title, breadcrumbs }) => {
+const PageHeader = forwardRef<HTMLElement, PageHeaderProps>(({ title, breadcrumbs }, ref) => {
   const { t, isRTL } = useLanguage();
+  const Separator = isRTL ? ChevronLeft : ChevronRight;
 
   return (
-    <section className="relative py-24 md:py-32 overflow-hidden">
+    <section ref={ref} className="relative py-24 md:py-32 overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary to-navy-dark">
         {/* Decorative Elements */}
@@ -43,20 +46,23 @@ const PageHeader: React.FC<PageHeaderProps> = ({ title, breadcrumbs }) => {
           {/* Breadcrumbs */}
           {breadcrumbs && (
             <nav className="mb-4">
-              <ol className={`flex items-center gap-2 text-white/70 text-sm ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <ol className={`flex items-center gap-2 text-white/70 text-sm ${isRTL ? 'flex-row-reverse justify-end' : ''}`}>
                 <li>
-                  <a href="/" className="hover:text-white transition-colors">
+                  <Link to="/" className={`hover:text-white transition-colors flex items-center gap-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                    <Home className="w-4 h-4" />
                     {t({ en: 'Home', ar: 'الرئيسية' })}
-                  </a>
+                  </Link>
                 </li>
                 {breadcrumbs.map((crumb, index) => (
                   <React.Fragment key={index}>
-                    <li className={isRTL ? 'rotate-180' : ''}>/</li>
+                    <li>
+                      <Separator className="w-4 h-4" />
+                    </li>
                     <li>
                       {crumb.href ? (
-                        <a href={crumb.href} className="hover:text-white transition-colors">
+                        <Link to={crumb.href} className="hover:text-white transition-colors">
                           {t(crumb.label)}
-                        </a>
+                        </Link>
                       ) : (
                         <span className="text-white">{t(crumb.label)}</span>
                       )}
@@ -87,6 +93,8 @@ const PageHeader: React.FC<PageHeaderProps> = ({ title, breadcrumbs }) => {
       </div>
     </section>
   );
-};
+});
+
+PageHeader.displayName = 'PageHeader';
 
 export default PageHeader;
