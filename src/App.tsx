@@ -4,6 +4,9 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LanguageProvider } from "@/contexts/LanguageContext";
+import { AuthProvider } from "@/contexts/AuthContext";
+import ProtectedRoute from "@/components/admin/ProtectedRoute";
+import AdminLayout from "@/components/admin/AdminLayout";
 import Index from "./pages/Index";
 import About from "./pages/About";
 import Products from "./pages/Products";
@@ -17,48 +20,69 @@ import QualityManagement from "./pages/QualityManagement";
 import MedicalDirectory from "./pages/MedicalDirectory";
 import NotFound from "./pages/NotFound";
 
+// Admin pages
+import Login from "./pages/admin/Login";
+import Dashboard from "./pages/admin/Dashboard";
+import PagesAdmin from "./pages/admin/PagesAdmin";
+import ProductsAdmin from "./pages/admin/ProductsAdmin";
+import MediaAdmin from "./pages/admin/MediaAdmin";
+import SettingsAdmin from "./pages/admin/SettingsAdmin";
+import { NewsAdmin, VideosAdmin, HospitalsAdmin } from "./pages/admin/SimpleCRUD";
+
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <LanguageProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            {/* Home */}
-            <Route path="/" element={<Index />} />
-            
-            {/* About Section */}
-            <Route path="/about" element={<About />} />
-            <Route path="/management" element={<Management />} />
-            <Route path="/social-responsibility" element={<SocialResponsibility />} />
-            
-            {/* Products */}
-            <Route path="/products" element={<Products />} />
-            <Route path="/products/:id" element={<ProductDetail />} />
-            
-            {/* Media */}
-            <Route path="/news" element={<News />} />
-            <Route path="/videos" element={<Videos />} />
-            <Route path="/media" element={<News />} />
-            
-            {/* Quality Management */}
-            <Route path="/quality" element={<QualityManagement />} />
-            
-            {/* Medical Directory */}
-            <Route path="/medical-directory" element={<MedicalDirectory />} />
-            
-            {/* Contact */}
-            <Route path="/contact" element={<Contact />} />
-            
-            {/* 404 */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
-    </LanguageProvider>
+    <AuthProvider>
+      <LanguageProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Routes>
+              {/* Public site */}
+              <Route path="/" element={<Index />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/management" element={<Management />} />
+              <Route path="/social-responsibility" element={<SocialResponsibility />} />
+              <Route path="/products" element={<Products />} />
+              <Route path="/products/:id" element={<ProductDetail />} />
+              <Route path="/news" element={<News />} />
+              <Route path="/videos" element={<Videos />} />
+              <Route path="/media" element={<News />} />
+              <Route path="/quality" element={<QualityManagement />} />
+              <Route path="/medical-directory" element={<MedicalDirectory />} />
+              <Route path="/contact" element={<Contact />} />
+
+              {/* Admin auth */}
+              <Route path="/logindashboardshiba" element={<Login />} />
+
+              {/* Protected admin dashboard */}
+              <Route
+                path="/admin"
+                element={
+                  <ProtectedRoute requireAdmin>
+                    <AdminLayout />
+                  </ProtectedRoute>
+                }
+              >
+                <Route index element={<Dashboard />} />
+                <Route path="pages" element={<PagesAdmin />} />
+                <Route path="products" element={<ProductsAdmin />} />
+                <Route path="news" element={<NewsAdmin />} />
+                <Route path="videos" element={<VideosAdmin />} />
+                <Route path="hospitals" element={<HospitalsAdmin />} />
+                <Route path="media" element={<MediaAdmin />} />
+                <Route path="settings" element={<SettingsAdmin />} />
+              </Route>
+
+              {/* 404 */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </TooltipProvider>
+      </LanguageProvider>
+    </AuthProvider>
   </QueryClientProvider>
 );
 
