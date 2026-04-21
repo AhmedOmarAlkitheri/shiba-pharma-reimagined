@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard, FileText, Package, Newspaper, Video, Building2,
-  Settings, Image as ImageIcon, LogOut, ExternalLink, Shield
+  Settings, Image as ImageIcon, LogOut, ExternalLink, Shield, Users, Tag,
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
@@ -12,10 +12,12 @@ const navItems = [
   { to: '/admin', icon: LayoutDashboard, label: 'Dashboard', end: true },
   { to: '/admin/pages', icon: FileText, label: 'Pages & Sections' },
   { to: '/admin/products', icon: Package, label: 'Products' },
+  { to: '/admin/categories', icon: Tag, label: 'Categories' },
   { to: '/admin/news', icon: Newspaper, label: 'News' },
   { to: '/admin/videos', icon: Video, label: 'Videos' },
   { to: '/admin/hospitals', icon: Building2, label: 'Medical Directory' },
   { to: '/admin/media', icon: ImageIcon, label: 'Media Library' },
+  { to: '/admin/users', icon: Users, label: 'Users & Roles' },
   { to: '/admin/settings', icon: Settings, label: 'Site Settings' },
 ];
 

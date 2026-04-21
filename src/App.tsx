@@ -25,6 +25,8 @@ import Login from "./pages/admin/Login";
 import Dashboard from "./pages/admin/Dashboard";
 import PagesAdmin from "./pages/admin/PagesAdmin";
 import ProductsAdmin from "./pages/admin/ProductsAdmin";
+import CategoriesAdmin from "./pages/admin/CategoriesAdmin";
+import UsersAdmin from "./pages/admin/UsersAdmin";
 import MediaAdmin from "./pages/admin/MediaAdmin";
 import SettingsAdmin from "./pages/admin/SettingsAdmin";
 import { NewsAdmin, VideosAdmin, HospitalsAdmin } from "./pages/admin/SimpleCRUD";
@@ -69,6 +71,8 @@ const App = () => (
                 <Route index element={<Dashboard />} />
                 <Route path="pages" element={<PagesAdmin />} />
                 <Route path="products" element={<ProductsAdmin />} />
+                <Route path="categories" element={<CategoriesAdmin />} />
+                <Route path="users" element={<UsersAdmin />} />
                 <Route path="news" element={<NewsAdmin />} />
                 <Route path="videos" element={<VideosAdmin />} />
                 <Route path="hospitals" element={<HospitalsAdmin />} />
