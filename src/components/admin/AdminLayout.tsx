@@ -3,6 +3,7 @@ import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard, FileText, Package, Newspaper, Video, Building2,
   Settings, Image as ImageIcon, LogOut, ExternalLink, Shield, Users, Tag,
+  Mail, Inbox, KeyRound,
 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
@@ -17,7 +18,10 @@ const navItems = [
   { to: '/admin/videos', icon: Video, label: 'Videos' },
   { to: '/admin/hospitals', icon: Building2, label: 'Medical Directory' },
   { to: '/admin/media', icon: ImageIcon, label: 'Media Library' },
+  { to: '/admin/messages', icon: Inbox, label: 'Contact Messages' },
+  { to: '/admin/subscribers', icon: Mail, label: 'Newsletter' },
   { to: '/admin/users', icon: Users, label: 'Users & Roles' },
+  { to: '/admin/account', icon: KeyRound, label: 'My Account' },
   { to: '/admin/settings', icon: Settings, label: 'Site Settings' },
 ];
 

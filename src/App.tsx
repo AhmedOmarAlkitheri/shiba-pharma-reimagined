@@ -29,6 +29,9 @@ import CategoriesAdmin from "./pages/admin/CategoriesAdmin";
 import UsersAdmin from "./pages/admin/UsersAdmin";
 import MediaAdmin from "./pages/admin/MediaAdmin";
 import SettingsAdmin from "./pages/admin/SettingsAdmin";
+import MessagesAdmin from "./pages/admin/MessagesAdmin";
+import SubscribersAdmin from "./pages/admin/SubscribersAdmin";
+import AccountAdmin from "./pages/admin/AccountAdmin";
 import { NewsAdmin, VideosAdmin, HospitalsAdmin } from "./pages/admin/SimpleCRUD";
 
 const queryClient = new QueryClient();
@@ -77,6 +80,9 @@ const App = () => (
                 <Route path="videos" element={<VideosAdmin />} />
                 <Route path="hospitals" element={<HospitalsAdmin />} />
                 <Route path="media" element={<MediaAdmin />} />
+                <Route path="messages" element={<MessagesAdmin />} />
+                <Route path="subscribers" element={<SubscribersAdmin />} />
+                <Route path="account" element={<AccountAdmin />} />
                 <Route path="settings" element={<SettingsAdmin />} />
               </Route>
 

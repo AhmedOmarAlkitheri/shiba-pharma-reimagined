@@ -13,7 +13,7 @@ import {
   ArrowUp
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import NewsletterSignup from '@/components/NewsletterSignup';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { 
   companyInfo, 
@@ -224,25 +224,8 @@ const Footer: React.FC = () => {
             <p className="text-primary-foreground/70 mb-6">
               {t(uiTranslations.sections.newsletterDescription)}
             </p>
-            <form className="space-y-3">
-              <Input
-                type="email"
-                placeholder={t(uiTranslations.form.yourEmail)}
-                className="bg-white/10 border-white/20 text-primary-foreground placeholder:text-primary-foreground/50 focus:border-accent transition-all duration-300"
-              />
-              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                <Button variant="accent" className="w-full group">
-                  <motion.span
-                    className={`${isRTL ? 'ml-2' : 'mr-2'}`}
-                    animate={{ x: [0, 5, 0] }}
-                    transition={{ duration: 1.5, repeat: Infinity }}
-                  >
-                    <Send className="w-4 h-4" />
-                  </motion.span>
-                  {t(uiTranslations.common.subscribe)}
-                </Button>
-              </motion.div>
-            </form>
+            <NewsletterSignup />
+
           </motion.div>
         </motion.div>
       </div>
