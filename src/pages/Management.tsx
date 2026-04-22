@@ -8,8 +8,15 @@ import { Card, CardContent } from '@/components/ui/card';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { managementWord } from '@/data/siteData';
 
+import { usePageSections } from '@/hooks/useSiteContent';
+import { SectionsList } from '@/components/sections/SectionRenderer';
+
 const Management: React.FC = () => {
   const { t, isRTL } = useLanguage();
+  const { sections, loading: cmsLoading } = usePageSections('management');
+  if (!cmsLoading && sections.length > 0) {
+    return (<div className="min-h-screen"><Header /><main><SectionsList sections={sections} /></main><Footer /></div>);
+  }
 
   const paragraphs = t(managementWord.content).split('\n\n').filter(Boolean);
 

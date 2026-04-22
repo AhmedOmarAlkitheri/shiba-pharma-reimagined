@@ -20,8 +20,15 @@ const colorMap: Record<string, string> = {
   environment: 'bg-gold',
 };
 
+import { usePageSections } from '@/hooks/useSiteContent';
+import { SectionsList } from '@/components/sections/SectionRenderer';
+
 const SocialResponsibility: React.FC = () => {
   const { t, isRTL } = useLanguage();
+  const { sections, loading: cmsLoading } = usePageSections('social-responsibility');
+  if (!cmsLoading && sections.length > 0) {
+    return (<div className="min-h-screen"><Header /><main><SectionsList sections={sections} /></main><Footer /></div>);
+  }
 
   return (
     <div className="min-h-screen">

@@ -20,10 +20,18 @@ const Contact: React.FC = () => {
     message: ''
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission
-    console.log(formData);
+    const { supabase } = await import('@/integrations/supabase/client');
+    const { toast } = await import('sonner');
+    const { error } = await supabase.from('contact_messages').insert({
+      name: formData.name, email: formData.email, subject: formData.subject, message: formData.message,
+    });
+    if (error) toast.error(error.message);
+    else {
+      toast.success(t({ en: 'Message sent!', ar: 'تم إرسال الرسالة!' }));
+      setFormData({ name: '', email: '', subject: '', message: '' });
+    }
   };
 
   const contactCards = [

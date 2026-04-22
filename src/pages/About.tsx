@@ -8,8 +8,21 @@ import { Card, CardContent } from '@/components/ui/card';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { aboutContent, companyInfo, productionLines, uiTranslations } from '@/data/siteData';
 
+import { usePageSections } from '@/hooks/useSiteContent';
+import { SectionsList } from '@/components/sections/SectionRenderer';
+
 const About: React.FC = () => {
   const { t, isRTL } = useLanguage();
+  const { sections, loading: cmsLoading } = usePageSections('about');
+  if (!cmsLoading && sections.length > 0) {
+    return (
+      <div className="min-h-screen">
+        <Header />
+        <main><SectionsList sections={sections} /></main>
+        <Footer />
+      </div>
+    );
+  }
 
   const aboutCards = [
     { icon: Mail, ...aboutContent.mission, color: 'bg-accent' },

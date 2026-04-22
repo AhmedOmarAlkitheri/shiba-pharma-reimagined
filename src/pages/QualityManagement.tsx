@@ -8,8 +8,15 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useLanguage } from '@/contexts/LanguageContext';
 
+import { usePageSections } from '@/hooks/useSiteContent';
+import { SectionsList } from '@/components/sections/SectionRenderer';
+
 const QualityManagement: React.FC = () => {
   const { t, isRTL } = useLanguage();
+  const { sections, loading: cmsLoading } = usePageSections('quality');
+  if (!cmsLoading && sections.length > 0) {
+    return (<div className="min-h-screen"><Header /><main><SectionsList sections={sections} /></main><Footer /></div>);
+  }
 
   const qualityTabs = [
     {
