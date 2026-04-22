@@ -224,7 +224,7 @@ const Footer: React.FC = () => {
             <p className="text-primary-foreground/70 mb-6">
               {t(uiTranslations.sections.newsletterDescription)}
             </p>
-            <NewsletterSignup variant="footer" />
+            <NewsletterSignup />
 
           </motion.div>
         </motion.div>
