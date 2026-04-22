@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      contact_messages: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          is_read: boolean
+          message: string
+          name: string
+          subject: string | null
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          is_read?: boolean
+          message: string
+          name: string
+          subject?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          is_read?: boolean
+          message?: string
+          name?: string
+          subject?: string | null
+        }
+        Relationships: []
+      }
       hospitals: {
         Row: {
           address_ar: string | null
@@ -155,6 +185,39 @@ export type Database = {
         }
         Relationships: []
       }
+      newsletter_subscribers: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          is_active: boolean
+          language: string
+          name: string | null
+          unsubscribe_token: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          is_active?: boolean
+          language?: string
+          name?: string | null
+          unsubscribe_token?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          is_active?: boolean
+          language?: string
+          name?: string | null
+          unsubscribe_token?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       pages: {
         Row: {
           created_at: string
@@ -230,6 +293,7 @@ export type Database = {
       products: {
         Row: {
           category_id: string | null
+          certifications: string[] | null
           composition_ar: string | null
           composition_en: string | null
           contraindications_ar: string | null
@@ -240,24 +304,37 @@ export type Database = {
           display_order: number
           dosage_ar: string | null
           dosage_en: string | null
+          features_ar: string[] | null
+          features_en: string[] | null
+          gallery_urls: string[] | null
           id: string
           image_url: string | null
           indication_ar: string | null
           indication_en: string | null
+          interactions_ar: string | null
+          interactions_en: string | null
           is_featured: boolean
           is_published: boolean
           name: string
+          overdose_ar: string | null
+          overdose_en: string | null
           packaging_ar: string | null
           packaging_en: string | null
+          pregnancy_ar: string | null
+          pregnancy_en: string | null
           side_effects_ar: string | null
           side_effects_en: string | null
           slug: string
+          specifications: Json | null
           storage_ar: string | null
           storage_en: string | null
           updated_at: string
+          warnings_ar: string | null
+          warnings_en: string | null
         }
         Insert: {
           category_id?: string | null
+          certifications?: string[] | null
           composition_ar?: string | null
           composition_en?: string | null
           contraindications_ar?: string | null
@@ -268,24 +345,37 @@ export type Database = {
           display_order?: number
           dosage_ar?: string | null
           dosage_en?: string | null
+          features_ar?: string[] | null
+          features_en?: string[] | null
+          gallery_urls?: string[] | null
           id?: string
           image_url?: string | null
           indication_ar?: string | null
           indication_en?: string | null
+          interactions_ar?: string | null
+          interactions_en?: string | null
           is_featured?: boolean
           is_published?: boolean
           name: string
+          overdose_ar?: string | null
+          overdose_en?: string | null
           packaging_ar?: string | null
           packaging_en?: string | null
+          pregnancy_ar?: string | null
+          pregnancy_en?: string | null
           side_effects_ar?: string | null
           side_effects_en?: string | null
           slug: string
+          specifications?: Json | null
           storage_ar?: string | null
           storage_en?: string | null
           updated_at?: string
+          warnings_ar?: string | null
+          warnings_en?: string | null
         }
         Update: {
           category_id?: string | null
+          certifications?: string[] | null
           composition_ar?: string | null
           composition_en?: string | null
           contraindications_ar?: string | null
@@ -296,21 +386,33 @@ export type Database = {
           display_order?: number
           dosage_ar?: string | null
           dosage_en?: string | null
+          features_ar?: string[] | null
+          features_en?: string[] | null
+          gallery_urls?: string[] | null
           id?: string
           image_url?: string | null
           indication_ar?: string | null
           indication_en?: string | null
+          interactions_ar?: string | null
+          interactions_en?: string | null
           is_featured?: boolean
           is_published?: boolean
           name?: string
+          overdose_ar?: string | null
+          overdose_en?: string | null
           packaging_ar?: string | null
           packaging_en?: string | null
+          pregnancy_ar?: string | null
+          pregnancy_en?: string | null
           side_effects_ar?: string | null
           side_effects_en?: string | null
           slug?: string
+          specifications?: Json | null
           storage_ar?: string | null
           storage_en?: string | null
           updated_at?: string
+          warnings_ar?: string | null
+          warnings_en?: string | null
         }
         Relationships: [
           {
