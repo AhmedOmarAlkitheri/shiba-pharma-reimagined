@@ -8,12 +8,13 @@ import { Switch } from '@/components/ui/switch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Plus, Pencil, Trash2, Loader2, Star } from 'lucide-react';
+import { Plus, Pencil, Trash2, Loader2, Star, X } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import MediaPicker from '@/components/admin/MediaPicker';
 
 interface Category { id: string; name_en: string; }
+interface Spec { label_en: string; label_ar: string; value_en: string; value_ar: string; }
 interface Product {
   id?: string; slug: string; name: string; image_url: string | null; category_id: string | null;
   description_en: string | null; description_ar: string | null;
@@ -24,6 +25,14 @@ interface Product {
   contraindications_en: string | null; contraindications_ar: string | null;
   storage_en: string | null; storage_ar: string | null;
   packaging_en: string | null; packaging_ar: string | null;
+  warnings_en: string | null; warnings_ar: string | null;
+  interactions_en: string | null; interactions_ar: string | null;
+  pregnancy_en: string | null; pregnancy_ar: string | null;
+  overdose_en: string | null; overdose_ar: string | null;
+  features_en: string[] | null; features_ar: string[] | null;
+  specifications: Spec[] | null;
+  gallery_urls: string[] | null;
+  certifications: string[] | null;
   is_published: boolean; is_featured: boolean; display_order: number;
 }
 
@@ -33,8 +42,73 @@ const blank: Product = {
   indication_en: '', indication_ar: '', dosage_en: '', dosage_ar: '',
   side_effects_en: '', side_effects_ar: '', contraindications_en: '', contraindications_ar: '',
   storage_en: '', storage_ar: '', packaging_en: '', packaging_ar: '',
+  warnings_en: '', warnings_ar: '', interactions_en: '', interactions_ar: '',
+  pregnancy_en: '', pregnancy_ar: '', overdose_en: '', overdose_ar: '',
+  features_en: [], features_ar: [], specifications: [], gallery_urls: [], certifications: [],
   is_published: true, is_featured: false, display_order: 0,
 };
+
+const ListEditor: React.FC<{ items: string[]; onChange: (v: string[]) => void; placeholder?: string; rtl?: boolean }> =
+  ({ items, onChange, placeholder, rtl }) => {
+    const [draft, setDraft] = useState('');
+    return (
+      <div className="space-y-2">
+        <div className="flex gap-2">
+          <Input value={draft} onChange={(e) => setDraft(e.target.value)} placeholder={placeholder} dir={rtl ? 'rtl' : 'ltr'} />
+          <Button type="button" size="sm" onClick={() => { if (draft.trim()) { onChange([...items, draft.trim()]); setDraft(''); } }}>
+            <Plus className="w-4 h-4" />
+          </Button>
+        </div>
+        <div className="flex flex-wrap gap-1">
+          {items.map((it, i) => (
+            <span key={i} className="inline-flex items-center gap-1 px-2 py-1 bg-secondary rounded-md text-xs">
+              {it}
+              <button type="button" onClick={() => onChange(items.filter((_, j) => j !== i))}>
+                <X className="w-3 h-3" />
+              </button>
+            </span>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
+const SpecsEditor: React.FC<{ specs: Spec[]; onChange: (v: Spec[]) => void }> = ({ specs, onChange }) => {
+  const update = (i: number, patch: Partial<Spec>) =>
+    onChange(specs.map((s, j) => (i === j ? { ...s, ...patch } : s)));
+  return (
+    <div className="space-y-2">
+      {specs.map((s, i) => (
+        <div key={i} className="grid grid-cols-2 gap-2 p-2 border rounded-lg">
+          <Input value={s.label_en} placeholder="Label (EN)" onChange={(e) => update(i, { label_en: e.target.value })} />
+          <Input value={s.label_ar} placeholder="Label (AR)" dir="rtl" onChange={(e) => update(i, { label_ar: e.target.value })} />
+          <Input value={s.value_en} placeholder="Value (EN)" onChange={(e) => update(i, { value_en: e.target.value })} />
+          <Input value={s.value_ar} placeholder="Value (AR)" dir="rtl" onChange={(e) => update(i, { value_ar: e.target.value })} />
+          <Button type="button" size="sm" variant="outline" className="col-span-2"
+            onClick={() => onChange(specs.filter((_, j) => j !== i))}>Remove</Button>
+        </div>
+      ))}
+      <Button type="button" size="sm" variant="outline" onClick={() => onChange([...specs, { label_en: '', label_ar: '', value_en: '', value_ar: '' }])}>
+        <Plus className="w-4 h-4 mr-1" /> Add Specification
+      </Button>
+    </div>
+  );
+};
+
+const GalleryEditor: React.FC<{ urls: string[]; onChange: (v: string[]) => void }> = ({ urls, onChange }) => (
+  <div className="space-y-2">
+    {urls.map((u, i) => (
+      <div key={i} className="flex items-center gap-2">
+        <img src={u} alt="" className="w-12 h-12 object-cover rounded" />
+        <Input value={u} onChange={(e) => onChange(urls.map((x, j) => (i === j ? e.target.value : x)))} />
+        <Button type="button" size="sm" variant="outline" onClick={() => onChange(urls.filter((_, j) => j !== i))}>
+          <X className="w-4 h-4" />
+        </Button>
+      </div>
+    ))}
+    <MediaPicker value={null} onChange={(url) => url && onChange([...urls, url])} label="Add image" />
+  </div>
+);
 
 const ProductsAdmin: React.FC = () => {
   const [products, setProducts] = useState<any[]>([]);
@@ -55,6 +129,16 @@ const ProductsAdmin: React.FC = () => {
     setLoading(false);
   };
   useEffect(() => { load(); }, []);
+
+  const openEdit = (p: any) => {
+    setEditing({
+      ...blank, ...p,
+      features_en: p.features_en ?? [], features_ar: p.features_ar ?? [],
+      specifications: Array.isArray(p.specifications) ? p.specifications : [],
+      gallery_urls: p.gallery_urls ?? [], certifications: p.certifications ?? [],
+    });
+    setOpen(true);
+  };
 
   const save = async () => {
     if (!editing) return;
@@ -81,21 +165,26 @@ const ProductsAdmin: React.FC = () => {
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Products</h1>
+        <div>
+          <h1 className="text-3xl font-bold">Products</h1>
+          <p className="text-sm text-muted-foreground mt-1">Full management of every product field shown on the site.</p>
+        </div>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
-            <Button onClick={() => setEditing({ ...blank })}><Plus className="w-4 h-4 mr-1" />New Product</Button>
+            <Button onClick={() => { setEditing({ ...blank }); }}><Plus className="w-4 h-4 mr-1" />New Product</Button>
           </DialogTrigger>
-          <DialogContent className="max-w-4xl max-h-[92vh] overflow-y-auto">
+          <DialogContent className="max-w-5xl max-h-[92vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>{editing?.id ? 'Edit Product' : 'New Product'}</DialogTitle>
             </DialogHeader>
             {editing && (
               <Tabs defaultValue="basic">
-                <TabsList className="grid grid-cols-4 w-full">
+                <TabsList className="grid grid-cols-6 w-full">
                   <TabsTrigger value="basic">Basic</TabsTrigger>
                   <TabsTrigger value="medical">Medical</TabsTrigger>
                   <TabsTrigger value="usage">Usage</TabsTrigger>
+                  <TabsTrigger value="safety">Safety</TabsTrigger>
+                  <TabsTrigger value="features">Features & Specs</TabsTrigger>
                   <TabsTrigger value="meta">Meta</TabsTrigger>
                 </TabsList>
 
@@ -111,10 +200,8 @@ const ProductsAdmin: React.FC = () => {
                     </div>
                     <div className="space-y-2 md:col-span-2">
                       <Label>Category</Label>
-                      <Select
-                        value={editing.category_id ?? 'none'}
-                        onValueChange={(v) => setEditing({ ...editing, category_id: v === 'none' ? null : v })}
-                      >
+                      <Select value={editing.category_id ?? 'none'}
+                        onValueChange={(v) => setEditing({ ...editing, category_id: v === 'none' ? null : v })}>
                         <SelectTrigger><SelectValue placeholder="Select category" /></SelectTrigger>
                         <SelectContent>
                           <SelectItem value="none">— None —</SelectItem>
@@ -123,7 +210,7 @@ const ProductsAdmin: React.FC = () => {
                       </Select>
                     </div>
                     <div className="space-y-2 md:col-span-2">
-                      <Label>Image</Label>
+                      <Label>Main Image</Label>
                       <MediaPicker value={editing.image_url} onChange={(url) => setEditing({ ...editing, image_url: url })} />
                     </div>
                     <div className="space-y-2 md:col-span-2">
@@ -147,14 +234,6 @@ const ProductsAdmin: React.FC = () => {
                       <Textarea rows={3} value={editing.indication_en ?? ''} onChange={(e) => setEditing({ ...editing, indication_en: e.target.value })} /></div>
                     <div className="space-y-2"><Label>Indication (AR)</Label>
                       <Textarea rows={3} dir="rtl" value={editing.indication_ar ?? ''} onChange={(e) => setEditing({ ...editing, indication_ar: e.target.value })} /></div>
-                    <div className="space-y-2"><Label>Side Effects (EN)</Label>
-                      <Textarea rows={3} value={editing.side_effects_en ?? ''} onChange={(e) => setEditing({ ...editing, side_effects_en: e.target.value })} /></div>
-                    <div className="space-y-2"><Label>Side Effects (AR)</Label>
-                      <Textarea rows={3} dir="rtl" value={editing.side_effects_ar ?? ''} onChange={(e) => setEditing({ ...editing, side_effects_ar: e.target.value })} /></div>
-                    <div className="space-y-2"><Label>Contraindications (EN)</Label>
-                      <Textarea rows={3} value={editing.contraindications_en ?? ''} onChange={(e) => setEditing({ ...editing, contraindications_en: e.target.value })} /></div>
-                    <div className="space-y-2"><Label>Contraindications (AR)</Label>
-                      <Textarea rows={3} dir="rtl" value={editing.contraindications_ar ?? ''} onChange={(e) => setEditing({ ...editing, contraindications_ar: e.target.value })} /></div>
                   </div>
                 </TabsContent>
 
@@ -172,6 +251,62 @@ const ProductsAdmin: React.FC = () => {
                       <Input value={editing.packaging_en ?? ''} onChange={(e) => setEditing({ ...editing, packaging_en: e.target.value })} /></div>
                     <div className="space-y-2"><Label>Packaging (AR)</Label>
                       <Input dir="rtl" value={editing.packaging_ar ?? ''} onChange={(e) => setEditing({ ...editing, packaging_ar: e.target.value })} /></div>
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="safety" className="space-y-4 pt-4">
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div className="space-y-2"><Label>Side Effects (EN)</Label>
+                      <Textarea rows={3} value={editing.side_effects_en ?? ''} onChange={(e) => setEditing({ ...editing, side_effects_en: e.target.value })} /></div>
+                    <div className="space-y-2"><Label>Side Effects (AR)</Label>
+                      <Textarea rows={3} dir="rtl" value={editing.side_effects_ar ?? ''} onChange={(e) => setEditing({ ...editing, side_effects_ar: e.target.value })} /></div>
+                    <div className="space-y-2"><Label>Contraindications (EN)</Label>
+                      <Textarea rows={3} value={editing.contraindications_en ?? ''} onChange={(e) => setEditing({ ...editing, contraindications_en: e.target.value })} /></div>
+                    <div className="space-y-2"><Label>Contraindications (AR)</Label>
+                      <Textarea rows={3} dir="rtl" value={editing.contraindications_ar ?? ''} onChange={(e) => setEditing({ ...editing, contraindications_ar: e.target.value })} /></div>
+                    <div className="space-y-2"><Label>Warnings (EN)</Label>
+                      <Textarea rows={2} value={editing.warnings_en ?? ''} onChange={(e) => setEditing({ ...editing, warnings_en: e.target.value })} /></div>
+                    <div className="space-y-2"><Label>Warnings (AR)</Label>
+                      <Textarea rows={2} dir="rtl" value={editing.warnings_ar ?? ''} onChange={(e) => setEditing({ ...editing, warnings_ar: e.target.value })} /></div>
+                    <div className="space-y-2"><Label>Drug Interactions (EN)</Label>
+                      <Textarea rows={2} value={editing.interactions_en ?? ''} onChange={(e) => setEditing({ ...editing, interactions_en: e.target.value })} /></div>
+                    <div className="space-y-2"><Label>Drug Interactions (AR)</Label>
+                      <Textarea rows={2} dir="rtl" value={editing.interactions_ar ?? ''} onChange={(e) => setEditing({ ...editing, interactions_ar: e.target.value })} /></div>
+                    <div className="space-y-2"><Label>Pregnancy & Lactation (EN)</Label>
+                      <Textarea rows={2} value={editing.pregnancy_en ?? ''} onChange={(e) => setEditing({ ...editing, pregnancy_en: e.target.value })} /></div>
+                    <div className="space-y-2"><Label>Pregnancy & Lactation (AR)</Label>
+                      <Textarea rows={2} dir="rtl" value={editing.pregnancy_ar ?? ''} onChange={(e) => setEditing({ ...editing, pregnancy_ar: e.target.value })} /></div>
+                    <div className="space-y-2"><Label>Overdose (EN)</Label>
+                      <Textarea rows={2} value={editing.overdose_en ?? ''} onChange={(e) => setEditing({ ...editing, overdose_en: e.target.value })} /></div>
+                    <div className="space-y-2"><Label>Overdose (AR)</Label>
+                      <Textarea rows={2} dir="rtl" value={editing.overdose_ar ?? ''} onChange={(e) => setEditing({ ...editing, overdose_ar: e.target.value })} /></div>
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="features" className="space-y-6 pt-4">
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label>Key Features (EN)</Label>
+                      <ListEditor items={editing.features_en ?? []} onChange={(v) => setEditing({ ...editing, features_en: v })} placeholder="Add feature..." />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Key Features (AR)</Label>
+                      <ListEditor items={editing.features_ar ?? []} onChange={(v) => setEditing({ ...editing, features_ar: v })} placeholder="أضف ميزة..." rtl />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Specifications</Label>
+                    <SpecsEditor specs={editing.specifications ?? []} onChange={(v) => setEditing({ ...editing, specifications: v })} />
+                  </div>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label>Certifications</Label>
+                      <ListEditor items={editing.certifications ?? []} onChange={(v) => setEditing({ ...editing, certifications: v })} placeholder="WHO-GMP, ISO 9001..." />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Image Gallery</Label>
+                      <GalleryEditor urls={editing.gallery_urls ?? []} onChange={(v) => setEditing({ ...editing, gallery_urls: v })} />
+                    </div>
                   </div>
                 </TabsContent>
 
@@ -221,7 +356,7 @@ const ProductsAdmin: React.FC = () => {
                   </div>
                   <p className="text-xs text-muted-foreground truncate">/{p.slug}</p>
                 </div>
-                <Button size="sm" variant="outline" onClick={() => { setEditing(p); setOpen(true); }}><Pencil className="w-3 h-3" /></Button>
+                <Button size="sm" variant="outline" onClick={() => openEdit(p)}><Pencil className="w-3 h-3" /></Button>
                 <Button size="sm" variant="outline" onClick={() => remove(p.id)}><Trash2 className="w-3 h-3 text-destructive" /></Button>
               </div>
             ))}
