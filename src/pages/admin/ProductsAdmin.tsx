@@ -80,16 +80,16 @@ const SpecsEditor: React.FC<{ specs: Spec[]; onChange: (v: Spec[]) => void }> = 
     <div className="space-y-2">
       {specs.map((s, i) => (
         <div key={i} className="grid grid-cols-2 gap-2 p-2 border rounded-lg">
-          <Input value={s.label_en} placeholder="Label (EN)" onChange={(e) => update(i, { label_en: e.target.value })} />
-          <Input value={s.label_ar} placeholder="Label (AR)" dir="rtl" onChange={(e) => update(i, { label_ar: e.target.value })} />
-          <Input value={s.value_en} placeholder="Value (EN)" onChange={(e) => update(i, { value_en: e.target.value })} />
-          <Input value={s.value_ar} placeholder="Value (AR)" dir="rtl" onChange={(e) => update(i, { value_ar: e.target.value })} />
+          <Input value={s.label_en} placeholder="التسمية (EN)" onChange={(e) => update(i, { label_en: e.target.value })} />
+          <Input value={s.label_ar} placeholder="التسمية (AR)" dir="rtl" onChange={(e) => update(i, { label_ar: e.target.value })} />
+          <Input value={s.value_en} placeholder="القيمة (EN)" onChange={(e) => update(i, { value_en: e.target.value })} />
+          <Input value={s.value_ar} placeholder="القيمة (AR)" dir="rtl" onChange={(e) => update(i, { value_ar: e.target.value })} />
           <Button type="button" size="sm" variant="outline" className="col-span-2"
-            onClick={() => onChange(specs.filter((_, j) => j !== i))}>Remove</Button>
+            onClick={() => onChange(specs.filter((_, j) => j !== i))}>إزالة</Button>
         </div>
       ))}
       <Button type="button" size="sm" variant="outline" onClick={() => onChange([...specs, { label_en: '', label_ar: '', value_en: '', value_ar: '' }])}>
-        <Plus className="w-4 h-4 mr-1" /> Add Specification
+        <Plus className="w-4 h-4 mr-1" /> إضافة مواصفة
       </Button>
     </div>
   );
@@ -106,7 +106,7 @@ const GalleryEditor: React.FC<{ urls: string[]; onChange: (v: string[]) => void 
         </Button>
       </div>
     ))}
-    <MediaPicker value={null} onChange={(url) => url && onChange([...urls, url])} label="Add image" />
+    <MediaPicker value={null} onChange={(url) => url && onChange([...urls, url])} label="إضافة صورة" />
   </div>
 );
 
@@ -142,20 +142,20 @@ const ProductsAdmin: React.FC = () => {
 
   const save = async () => {
     if (!editing) return;
-    if (!editing.name || !editing.slug) return toast.error('Name and slug are required');
+    if (!editing.name || !editing.slug) return toast.error('الاسم والمعرّف مطلوبان');
     const { id, ...payload } = editing as any;
     delete payload.created_at; delete payload.updated_at;
     const { error } = id
       ? await supabase.from('products').update(payload).eq('id', id)
       : await supabase.from('products').insert(payload);
     if (error) return toast.error(error.message);
-    toast.success('Saved'); setOpen(false); setEditing(null); load();
+    toast.success('تم الحفظ'); setOpen(false); setEditing(null); load();
   };
 
   const remove = async (id: string) => {
-    if (!confirm('Delete this product?')) return;
+    if (!confirm('حذف هذا المنتج؟')) return;
     const { error } = await supabase.from('products').delete().eq('id', id);
-    if (error) toast.error(error.message); else { toast.success('Deleted'); load(); }
+    if (error) toast.error(error.message); else { toast.success('تم الحذف'); load(); }
   };
 
   const filtered = products.filter((p) =>
