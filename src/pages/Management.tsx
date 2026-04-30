@@ -15,7 +15,16 @@ const Management: React.FC = () => {
   const { t, isRTL } = useLanguage();
   const { sections, loading: cmsLoading } = usePageSections('management');
   if (!cmsLoading && sections.length > 0) {
-    return (<div className="min-h-screen"><Header /><main><SectionsList sections={sections} /></main><Footer /></div>);
+    return (
+      <div className="min-h-screen">
+        <Header />
+        <main>
+          <PageHeader title={managementWord.title} breadcrumbs={[{ label: managementWord.title }]} />
+          <SectionsList sections={sections} />
+        </main>
+        <Footer />
+      </div>
+    );
   }
 
   const paragraphs = t(managementWord.content).split('\n\n').filter(Boolean);

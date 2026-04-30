@@ -18,7 +18,10 @@ const About: React.FC = () => {
     return (
       <div className="min-h-screen">
         <Header />
-        <main><SectionsList sections={sections} /></main>
+        <main>
+          <PageHeader title={uiTranslations.sections.aboutUs} breadcrumbs={[{ label: uiTranslations.sections.aboutUs }]} />
+          <SectionsList sections={sections} />
+        </main>
         <Footer />
       </div>
     );
