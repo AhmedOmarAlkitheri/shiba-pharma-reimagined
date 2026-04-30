@@ -26,20 +26,20 @@ const SubscribersAdmin: React.FC = () => {
     await supabase.from('newsletter_subscribers').update({ is_active: v }).eq('id', id); load();
   };
   const remove = async (id: string) => {
-    if (!confirm('Remove this subscriber?')) return;
+    if (!confirm('إزالة هذا المشترك؟')) return;
     await supabase.from('newsletter_subscribers').delete().eq('id', id);
-    toast.success('Removed'); load();
+    toast.success('تمت الإزالة'); load();
   };
 
   const broadcast = async () => {
-    if (!subject || !body) return toast.error('Subject and body required');
+    if (!subject || !body) return toast.error('العنوان والمحتوى مطلوبان');
     setSending(true);
     const { data, error } = await supabase.functions.invoke('send-newsletter', {
       body: { subject, html: body },
     });
     setSending(false);
     if (error) return toast.error(error.message);
-    toast.success(`Sent to ${data?.sent ?? 0} subscribers`);
+    toast.success(`تم الإرسال إلى ${data?.sent ?? 0} مشترك`);
     setSubject(''); setBody('');
   };
 
@@ -55,26 +55,26 @@ const SubscribersAdmin: React.FC = () => {
     <div>
       <div className="flex justify-between items-center mb-6">
         <div>
-          <h1 className="text-3xl font-bold">Newsletter Subscribers</h1>
-          <p className="text-sm text-muted-foreground mt-1">{items.length} total · {items.filter((i) => i.is_active).length} active</p>
+          <h1 className="text-3xl font-bold">مشتركو النشرة البريدية</h1>
+          <p className="text-sm text-muted-foreground mt-1">{items.length} الإجمالي · {items.filter((i) => i.is_active).length} نشط</p>
         </div>
-        <Button variant="outline" onClick={exportCsv}><Download className="w-4 h-4 mr-1" />Export CSV</Button>
+        <Button variant="outline" onClick={exportCsv}><Download className="w-4 h-4 mr-1" />تصدير CSV</Button>
       </div>
 
       <Card className="p-6 mb-6">
-        <h2 className="font-semibold mb-3 flex items-center gap-2"><Send className="w-4 h-4" /> Broadcast Newsletter</h2>
+        <h2 className="font-semibold mb-3 flex items-center gap-2"><Send className="w-4 h-4" /> إرسال نشرة جماعية</h2>
         <div className="space-y-3">
           <div>
-            <Label>Subject</Label>
-            <Input value={subject} onChange={(e) => setSubject(e.target.value)} placeholder="New product launch..." />
+            <Label>العنوان</Label>
+            <Input value={subject} onChange={(e) => setSubject(e.target.value)} placeholder="إطلاق منتج جديد..." />
           </div>
           <div>
-            <Label>Body (HTML allowed)</Label>
-            <textarea className="w-full min-h-[140px] border rounded-md p-3 text-sm" value={body} onChange={(e) => setBody(e.target.value)} placeholder="<h2>Hello!</h2><p>...</p>" />
+            <Label>المحتوى (يدعم HTML)</Label>
+            <textarea className="w-full min-h-[140px] border rounded-md p-3 text-sm" value={body} onChange={(e) => setBody(e.target.value)} placeholder="<h2>مرحباً!</h2><p>...</p>" />
           </div>
           <Button onClick={broadcast} disabled={sending}>
             {sending ? <Loader2 className="w-4 h-4 mr-1 animate-spin" /> : <Send className="w-4 h-4 mr-1" />}
-            Send to all active subscribers
+            إرسال إلى جميع المشتركين النشطين
           </Button>
         </div>
       </Card>
@@ -94,7 +94,7 @@ const SubscribersAdmin: React.FC = () => {
                 <Button size="sm" variant="outline" onClick={() => remove(s.id)}><Trash2 className="w-3 h-3 text-destructive" /></Button>
               </div>
             ))}
-            {items.length === 0 && <p className="text-center py-8 text-muted-foreground">No subscribers yet.</p>}
+            {items.length === 0 && <p className="text-center py-8 text-muted-foreground">لا يوجد مشتركون بعد.</p>}
           </div>
         </Card>
       )}
