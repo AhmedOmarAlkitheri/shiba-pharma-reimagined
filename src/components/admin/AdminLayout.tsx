@@ -10,19 +10,19 @@ import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 
 const navItems = [
-  { to: '/admin', icon: LayoutDashboard, label: 'Dashboard', end: true },
-  { to: '/admin/pages', icon: FileText, label: 'Pages & Sections' },
-  { to: '/admin/products', icon: Package, label: 'Products' },
-  { to: '/admin/categories', icon: Tag, label: 'Categories' },
-  { to: '/admin/news', icon: Newspaper, label: 'News' },
-  { to: '/admin/videos', icon: Video, label: 'Videos' },
-  { to: '/admin/hospitals', icon: Building2, label: 'Medical Directory' },
-  { to: '/admin/media', icon: ImageIcon, label: 'Media Library' },
-  { to: '/admin/messages', icon: Inbox, label: 'Contact Messages' },
-  { to: '/admin/subscribers', icon: Mail, label: 'Newsletter' },
-  { to: '/admin/users', icon: Users, label: 'Users & Roles' },
-  { to: '/admin/account', icon: KeyRound, label: 'My Account' },
-  { to: '/admin/settings', icon: Settings, label: 'Site Settings' },
+  { to: '/admin', icon: LayoutDashboard, label: 'الرئيسية', end: true },
+  { to: '/admin/pages', icon: FileText, label: 'الصفحات والأقسام' },
+  { to: '/admin/products', icon: Package, label: 'المنتجات' },
+  { to: '/admin/categories', icon: Tag, label: 'الفئات' },
+  { to: '/admin/news', icon: Newspaper, label: 'الأخبار' },
+  { to: '/admin/videos', icon: Video, label: 'الفيديوهات' },
+  { to: '/admin/hospitals', icon: Building2, label: 'الدليل الطبي' },
+  { to: '/admin/media', icon: ImageIcon, label: 'مكتبة الوسائط' },
+  { to: '/admin/messages', icon: Inbox, label: 'رسائل التواصل' },
+  { to: '/admin/subscribers', icon: Mail, label: 'النشرة البريدية' },
+  { to: '/admin/users', icon: Users, label: 'المستخدمون والصلاحيات' },
+  { to: '/admin/account', icon: KeyRound, label: 'حسابي' },
+  { to: '/admin/settings', icon: Settings, label: 'إعدادات الموقع' },
 ];
 
 const AdminLayout: React.FC = () => {
@@ -45,8 +45,8 @@ const AdminLayout: React.FC = () => {
               <Shield className="w-5 h-5 text-primary-foreground" />
             </div>
             <div>
-              <h1 className="font-bold text-primary">Shiba Pharma</h1>
-              <p className="text-xs text-muted-foreground">Admin Panel</p>
+              <h1 className="font-bold text-primary">شيبا فارما</h1>
+              <p className="text-xs text-muted-foreground">لوحة التحكم</p>
             </div>
           </Link>
         </div>
@@ -79,14 +79,14 @@ const AdminLayout: React.FC = () => {
             className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-muted-foreground hover:bg-secondary transition-colors"
           >
             <ExternalLink className="w-4 h-4" />
-            View Site
+            عرض الموقع
           </a>
           <div className="px-3 py-2 text-xs text-muted-foreground border-t border-border pt-3">
             <p className="truncate font-medium text-foreground">{user?.email}</p>
           </div>
           <Button variant="outline" size="sm" className="w-full justify-start" onClick={handleSignOut}>
             <LogOut className="w-4 h-4 mr-2" />
-            Sign Out
+            تسجيل الخروج
           </Button>
         </div>
       </aside>

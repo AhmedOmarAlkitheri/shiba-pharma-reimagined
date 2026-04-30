@@ -32,25 +32,25 @@ const Login: React.FC = () => {
     const { error } = await signIn(signinEmail, signinPassword);
     setSubmitting(false);
     if (error) {
-      toast.error(error.message || 'Sign in failed');
+      toast.error(error.message || 'فشل تسجيل الدخول');
     } else {
-      toast.success('Welcome back!');
+      toast.success('مرحباً بعودتك!');
     }
   };
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     if (signupPassword.length < 6) {
-      toast.error('Password must be at least 6 characters');
+      toast.error('يجب أن تكون كلمة المرور 6 أحرف على الأقل');
       return;
     }
     setSubmitting(true);
     const { error } = await signUp(signupEmail, signupPassword, signupName);
     setSubmitting(false);
     if (error) {
-      toast.error(error.message || 'Sign up failed');
+      toast.error(error.message || 'فشل إنشاء الحساب');
     } else {
-      toast.success('Account created! You can sign in now.');
+      toast.success('تم إنشاء الحساب! يمكنك تسجيل الدخول الآن.');
     }
   };
 
@@ -73,21 +73,21 @@ const Login: React.FC = () => {
           <div className="inline-flex w-16 h-16 bg-primary rounded-2xl items-center justify-center mb-4 shadow-lg">
             <Shield className="w-8 h-8 text-primary-foreground" />
           </div>
-          <h1 className="text-3xl font-bold text-primary">Shiba Pharma</h1>
-          <p className="text-muted-foreground mt-1">Admin Dashboard Access</p>
+          <h1 className="text-3xl font-bold text-primary">شيبا فارما</h1>
+          <p className="text-muted-foreground mt-1">دخول لوحة التحكم</p>
         </div>
 
         <Card className="p-6 shadow-xl">
           <Tabs defaultValue="signin">
             <TabsList className="grid grid-cols-2 w-full mb-6">
-              <TabsTrigger value="signin">Sign In</TabsTrigger>
-              <TabsTrigger value="signup">Sign Up</TabsTrigger>
+              <TabsTrigger value="signin">تسجيل الدخول</TabsTrigger>
+              <TabsTrigger value="signup">إنشاء حساب</TabsTrigger>
             </TabsList>
 
             <TabsContent value="signin">
               <form onSubmit={handleSignIn} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="signin-email">Email</Label>
+                  <Label htmlFor="signin-email">البريد الإلكتروني</Label>
                   <div className="relative">
                     <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                     <Input id="signin-email" type="email" required value={signinEmail}
@@ -95,7 +95,7 @@ const Login: React.FC = () => {
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="signin-password">Password</Label>
+                  <Label htmlFor="signin-password">كلمة المرور</Label>
                   <div className="relative">
                     <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                     <Input id="signin-password" type="password" required value={signinPassword}
@@ -103,7 +103,7 @@ const Login: React.FC = () => {
                   </div>
                 </div>
                 <Button type="submit" className="w-full" size="lg" disabled={submitting}>
-                  {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Sign In'}
+                  {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : 'تسجيل الدخول'}
                 </Button>
               </form>
             </TabsContent>
@@ -111,15 +111,15 @@ const Login: React.FC = () => {
             <TabsContent value="signup">
               <form onSubmit={handleSignUp} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="signup-name">Display Name</Label>
+                  <Label htmlFor="signup-name">اسم العرض</Label>
                   <div className="relative">
                     <UserIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                     <Input id="signup-name" required value={signupName}
-                      onChange={(e) => setSignupName(e.target.value)} className="pl-10" placeholder="Your name" />
+                      onChange={(e) => setSignupName(e.target.value)} className="pl-10" placeholder="اسمك" />
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="signup-email">Email</Label>
+                  <Label htmlFor="signup-email">البريد الإلكتروني</Label>
                   <div className="relative">
                     <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                     <Input id="signup-email" type="email" required value={signupEmail}
@@ -127,18 +127,18 @@ const Login: React.FC = () => {
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="signup-password">Password</Label>
+                  <Label htmlFor="signup-password">كلمة المرور</Label>
                   <div className="relative">
                     <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                     <Input id="signup-password" type="password" required minLength={6} value={signupPassword}
-                      onChange={(e) => setSignupPassword(e.target.value)} className="pl-10" placeholder="At least 6 characters" />
+                      onChange={(e) => setSignupPassword(e.target.value)} className="pl-10" placeholder="6 أحرف على الأقل" />
                   </div>
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  💡 The first user to sign up automatically becomes admin.
+                  💡 أول مستخدم يتم تسجيله يصبح مديراً تلقائياً.
                 </p>
                 <Button type="submit" className="w-full" size="lg" disabled={submitting}>
-                  {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Create Account'}
+                  {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : 'إنشاء حساب'}
                 </Button>
               </form>
             </TabsContent>

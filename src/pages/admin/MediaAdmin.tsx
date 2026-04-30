@@ -36,31 +36,31 @@ const MediaAdmin: React.FC = () => {
     }
     setUploading(false);
     if (inputRef.current) inputRef.current.value = '';
-    toast.success('Uploaded');
+    toast.success('تم الرفع');
     load();
   };
 
   const remove = async (item: MediaItem) => {
-    if (!confirm('Delete this file?')) return;
+    if (!confirm('حذف هذا الملف؟')) return;
     await supabase.storage.from('site-media').remove([item.file_path]);
     await supabase.from('media').delete().eq('id', item.id);
-    toast.success('Deleted'); load();
+    toast.success('تم الحذف'); load();
   };
 
   const copy = (url: string) => {
     navigator.clipboard.writeText(url);
-    toast.success('URL copied');
+    toast.success('تم نسخ الرابط');
   };
 
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold">Media Library</h1>
+        <h1 className="text-3xl font-bold">مكتبة الوسائط</h1>
         <div>
           <input ref={inputRef} type="file" multiple accept="image/*" className="hidden" onChange={handleUpload} />
           <Button onClick={() => inputRef.current?.click()} disabled={uploading}>
             {uploading ? <Loader2 className="w-4 h-4 mr-1 animate-spin" /> : <Upload className="w-4 h-4 mr-1" />}
-            Upload
+            رفع
           </Button>
         </div>
       </div>
@@ -79,7 +79,7 @@ const MediaAdmin: React.FC = () => {
               </div>
             </Card>
           ))}
-          {items.length === 0 && <p className="text-muted-foreground col-span-full text-center py-12">No media yet. Upload your first file.</p>}
+          {items.length === 0 && <p className="text-muted-foreground col-span-full text-center py-12">لا توجد وسائط بعد. ارفع أول ملف.</p>}
         </div>
       )}
     </div>

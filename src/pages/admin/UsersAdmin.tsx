@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Loader2, Shield, User as UserIcon, Pencil } from 'lucide-react';
+import { Loader2, Shield, User as UserIcon } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -31,18 +30,20 @@ const UsersAdmin: React.FC = () => {
   useEffect(() => { load(); }, []);
 
   const setRole = async (user_id: string, role: RoleRow['role']) => {
-    // Delete existing roles then insert new
     await supabase.from('user_roles').delete().eq('user_id', user_id);
     const { error } = await supabase.from('user_roles').insert({ user_id, role });
     if (error) return toast.error(error.message);
     setRoles((m) => ({ ...m, [user_id]: role }));
-    toast.success('Role updated');
+    toast.success('تم تحديث الصلاحية');
   };
+
+  const roleLabel = (r: RoleRow['role']) =>
+    r === 'admin' ? 'مدير' : r === 'editor' ? 'محرر' : 'مستخدم';
 
   return (
     <div>
-      <h1 className="text-3xl font-bold mb-2">Users & Roles</h1>
-      <p className="text-sm text-muted-foreground mb-6">Manage user permissions. Only admins can access the dashboard.</p>
+      <h1 className="text-3xl font-bold mb-2">المستخدمون والصلاحيات</h1>
+      <p className="text-sm text-muted-foreground mb-6">إدارة صلاحيات المستخدمين. المدراء فقط يمكنهم الوصول للوحة التحكم.</p>
 
       {loading ? <Loader2 className="w-6 h-6 animate-spin" /> : (
         <Card className="p-4">
@@ -59,17 +60,17 @@ const UsersAdmin: React.FC = () => {
                     <p className="text-xs text-muted-foreground truncate">{p.email}</p>
                   </div>
                   <Select value={role} onValueChange={(v) => setRole(p.user_id, v as RoleRow['role'])}>
-                    <SelectTrigger className="w-32"><SelectValue /></SelectTrigger>
+                    <SelectTrigger className="w-32"><SelectValue>{roleLabel(role)}</SelectValue></SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="admin">Admin</SelectItem>
-                      <SelectItem value="editor">Editor</SelectItem>
-                      <SelectItem value="user">User</SelectItem>
+                      <SelectItem value="admin">مدير</SelectItem>
+                      <SelectItem value="editor">محرر</SelectItem>
+                      <SelectItem value="user">مستخدم</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
               );
             })}
-            {profiles.length === 0 && <p className="text-center py-8 text-muted-foreground">No users yet.</p>}
+            {profiles.length === 0 && <p className="text-center py-8 text-muted-foreground">لا يوجد مستخدمون بعد.</p>}
           </div>
         </Card>
       )}

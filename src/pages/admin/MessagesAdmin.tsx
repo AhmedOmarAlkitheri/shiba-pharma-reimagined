@@ -22,15 +22,15 @@ const MessagesAdmin: React.FC = () => {
     load();
   };
   const remove = async (id: string) => {
-    if (!confirm('Delete this message?')) return;
+    if (!confirm('حذف هذه الرسالة؟')) return;
     await supabase.from('contact_messages').delete().eq('id', id);
-    toast.success('Deleted'); load();
+    toast.success('تم الحذف'); load();
   };
 
   return (
     <div>
-      <h1 className="text-3xl font-bold mb-2">Contact Messages</h1>
-      <p className="text-sm text-muted-foreground mb-6">Messages received from the contact form.</p>
+      <h1 className="text-3xl font-bold mb-2">رسائل التواصل</h1>
+      <p className="text-sm text-muted-foreground mb-6">الرسائل الواردة من نموذج التواصل.</p>
       {loading ? <Loader2 className="w-6 h-6 animate-spin" /> : (
         <div className="space-y-3">
           {items.map((m) => (
@@ -41,7 +41,7 @@ const MessagesAdmin: React.FC = () => {
                   <div className="flex items-center gap-2 mb-1">
                     <p className="font-semibold">{m.name}</p>
                     <a href={`mailto:${m.email}`} className="text-sm text-primary">{m.email}</a>
-                    {!m.is_read && <Badge>New</Badge>}
+                    {!m.is_read && <Badge>جديد</Badge>}
                     <span className="text-xs text-muted-foreground ml-auto">{new Date(m.created_at).toLocaleString()}</span>
                   </div>
                   {m.subject && <p className="font-medium text-sm mb-1">{m.subject}</p>}
@@ -58,7 +58,7 @@ const MessagesAdmin: React.FC = () => {
               </div>
             </Card>
           ))}
-          {items.length === 0 && <p className="text-center py-8 text-muted-foreground">No messages yet.</p>}
+          {items.length === 0 && <p className="text-center py-8 text-muted-foreground">لا توجد رسائل بعد.</p>}
         </div>
       )}
     </div>

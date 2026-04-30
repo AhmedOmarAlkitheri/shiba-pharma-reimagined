@@ -22,7 +22,7 @@ export interface FieldDef {
 interface Props {
   title: string;
   table: 'news_articles' | 'videos' | 'hospitals';
-  titleField: string; // e.g. 'title_en' or 'name_en'
+  titleField: string;
   imageField?: string;
   fields: FieldDef[];
   defaults?: Record<string, any>;
@@ -52,13 +52,13 @@ const SimpleCRUD: React.FC<Props> = ({ title, table, titleField, imageField, fie
       ({ error } = await supabase.from(table).insert(payload));
     }
     if (error) return toast.error(error.message);
-    toast.success('Saved'); setOpen(false); setEditing(null); load();
+    toast.success('تم الحفظ'); setOpen(false); setEditing(null); load();
   };
 
   const remove = async (id: string) => {
-    if (!confirm('Delete this item?')) return;
+    if (!confirm('حذف هذا العنصر؟')) return;
     const { error } = await supabase.from(table).delete().eq('id', id);
-    if (error) toast.error(error.message); else { toast.success('Deleted'); load(); }
+    if (error) toast.error(error.message); else { toast.success('تم الحذف'); load(); }
   };
 
   return (
@@ -68,11 +68,11 @@ const SimpleCRUD: React.FC<Props> = ({ title, table, titleField, imageField, fie
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
             <Button onClick={() => setEditing({ is_published: true, display_order: 0, ...defaults })}>
-              <Plus className="w-4 h-4 mr-1" />New
+              <Plus className="w-4 h-4 mr-1" />جديد
             </Button>
           </DialogTrigger>
           <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-            <DialogHeader><DialogTitle>{editing?.id ? 'Edit' : 'New'}</DialogTitle></DialogHeader>
+            <DialogHeader><DialogTitle>{editing?.id ? 'تعديل' : 'إضافة جديد'}</DialogTitle></DialogHeader>
             {editing && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {fields.map(f => (
@@ -87,7 +87,7 @@ const SimpleCRUD: React.FC<Props> = ({ title, table, titleField, imageField, fie
                     )}
                   </div>
                 ))}
-                <Button className="md:col-span-2" onClick={save}>Save</Button>
+                <Button className="md:col-span-2" onClick={save}>حفظ</Button>
               </div>
             )}
           </DialogContent>
@@ -109,7 +109,7 @@ const SimpleCRUD: React.FC<Props> = ({ title, table, titleField, imageField, fie
                 <Button size="sm" variant="outline" onClick={() => remove(item.id)}><Trash2 className="w-3 h-3" /></Button>
               </div>
             ))}
-            {items.length === 0 && <p className="text-center py-8 text-muted-foreground">No items yet.</p>}
+            {items.length === 0 && <p className="text-center py-8 text-muted-foreground">لا توجد عناصر بعد.</p>}
           </div>
         </Card>
       )}
@@ -118,48 +118,48 @@ const SimpleCRUD: React.FC<Props> = ({ title, table, titleField, imageField, fie
 };
 
 export const NewsAdmin = () => <SimpleCRUD
-  title="News Articles" table="news_articles" titleField="title_en" imageField="image_url"
+  title="الأخبار" table="news_articles" titleField="title_ar" imageField="image_url"
   fields={[
-    { key: 'title_en', label: 'Title (EN)' },
-    { key: 'title_ar', label: 'Title (AR)', dir: 'rtl' },
-    { key: 'slug', label: 'Slug' },
-    { key: 'published_date', label: 'Date', type: 'date' },
-    { key: 'image_url', label: 'Image URL', fullWidth: true },
-    { key: 'excerpt_en', label: 'Excerpt (EN)', type: 'textarea', fullWidth: true },
-    { key: 'excerpt_ar', label: 'Excerpt (AR)', type: 'textarea', dir: 'rtl', fullWidth: true },
-    { key: 'content_en', label: 'Content (EN)', type: 'textarea', fullWidth: true },
-    { key: 'content_ar', label: 'Content (AR)', type: 'textarea', dir: 'rtl', fullWidth: true },
-    { key: 'is_published', label: 'Published', type: 'switch' },
+    { key: 'title_en', label: 'العنوان (EN)' },
+    { key: 'title_ar', label: 'العنوان (AR)', dir: 'rtl' },
+    { key: 'slug', label: 'المعرّف (Slug)' },
+    { key: 'published_date', label: 'التاريخ', type: 'date' },
+    { key: 'image_url', label: 'رابط الصورة', fullWidth: true },
+    { key: 'excerpt_en', label: 'المقتطف (EN)', type: 'textarea', fullWidth: true },
+    { key: 'excerpt_ar', label: 'المقتطف (AR)', type: 'textarea', dir: 'rtl', fullWidth: true },
+    { key: 'content_en', label: 'المحتوى (EN)', type: 'textarea', fullWidth: true },
+    { key: 'content_ar', label: 'المحتوى (AR)', type: 'textarea', dir: 'rtl', fullWidth: true },
+    { key: 'is_published', label: 'منشور', type: 'switch' },
   ]}
 />;
 
 export const VideosAdmin = () => <SimpleCRUD
-  title="Videos" table="videos" titleField="title_en" imageField="thumbnail_url"
+  title="الفيديوهات" table="videos" titleField="title_ar" imageField="thumbnail_url"
   fields={[
-    { key: 'title_en', label: 'Title (EN)' },
-    { key: 'title_ar', label: 'Title (AR)', dir: 'rtl' },
-    { key: 'video_url', label: 'Video URL', fullWidth: true },
-    { key: 'thumbnail_url', label: 'Thumbnail URL', fullWidth: true },
-    { key: 'description_en', label: 'Description (EN)', type: 'textarea', fullWidth: true },
-    { key: 'description_ar', label: 'Description (AR)', type: 'textarea', dir: 'rtl', fullWidth: true },
-    { key: 'published_date', label: 'Date', type: 'date' },
-    { key: 'is_published', label: 'Published', type: 'switch' },
+    { key: 'title_en', label: 'العنوان (EN)' },
+    { key: 'title_ar', label: 'العنوان (AR)', dir: 'rtl' },
+    { key: 'video_url', label: 'رابط الفيديو', fullWidth: true },
+    { key: 'thumbnail_url', label: 'رابط الصورة المصغرة', fullWidth: true },
+    { key: 'description_en', label: 'الوصف (EN)', type: 'textarea', fullWidth: true },
+    { key: 'description_ar', label: 'الوصف (AR)', type: 'textarea', dir: 'rtl', fullWidth: true },
+    { key: 'published_date', label: 'التاريخ', type: 'date' },
+    { key: 'is_published', label: 'منشور', type: 'switch' },
   ]}
 />;
 
 export const HospitalsAdmin = () => <SimpleCRUD
-  title="Medical Directory" table="hospitals" titleField="name_en" imageField="logo_url"
+  title="الدليل الطبي" table="hospitals" titleField="name_ar" imageField="logo_url"
   fields={[
-    { key: 'name_en', label: 'Name (EN)' },
-    { key: 'name_ar', label: 'Name (AR)', dir: 'rtl' },
-    { key: 'type_en', label: 'Type (EN)' },
-    { key: 'type_ar', label: 'Type (AR)', dir: 'rtl' },
-    { key: 'phone', label: 'Phone' },
-    { key: 'email', label: 'Email' },
-    { key: 'logo_url', label: 'Logo URL', fullWidth: true },
-    { key: 'address_en', label: 'Address (EN)', type: 'textarea', fullWidth: true },
-    { key: 'address_ar', label: 'Address (AR)', type: 'textarea', dir: 'rtl', fullWidth: true },
-    { key: 'is_published', label: 'Published', type: 'switch' },
+    { key: 'name_en', label: 'الاسم (EN)' },
+    { key: 'name_ar', label: 'الاسم (AR)', dir: 'rtl' },
+    { key: 'type_en', label: 'النوع (EN)' },
+    { key: 'type_ar', label: 'النوع (AR)', dir: 'rtl' },
+    { key: 'phone', label: 'الهاتف' },
+    { key: 'email', label: 'البريد الإلكتروني' },
+    { key: 'logo_url', label: 'رابط الشعار', fullWidth: true },
+    { key: 'address_en', label: 'العنوان (EN)', type: 'textarea', fullWidth: true },
+    { key: 'address_ar', label: 'العنوان (AR)', type: 'textarea', dir: 'rtl', fullWidth: true },
+    { key: 'is_published', label: 'منشور', type: 'switch' },
   ]}
 />;
 

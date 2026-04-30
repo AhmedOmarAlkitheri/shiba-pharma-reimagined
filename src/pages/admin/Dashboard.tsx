@@ -41,19 +41,19 @@ const Dashboard: React.FC = () => {
   }, []);
 
   const cards = [
-    { label: 'Pages', value: stats.pages, icon: FileText, to: '/admin/pages', color: 'bg-blue-500' },
-    { label: 'Products', value: stats.products, icon: Package, to: '/admin/products', color: 'bg-emerald-500' },
-    { label: 'News', value: stats.news, icon: Newspaper, to: '/admin/news', color: 'bg-amber-500' },
-    { label: 'Videos', value: stats.videos, icon: Video, to: '/admin/videos', color: 'bg-rose-500' },
-    { label: 'Hospitals', value: stats.hospitals, icon: Building2, to: '/admin/hospitals', color: 'bg-violet-500' },
-    { label: 'Media Files', value: stats.media, icon: ImageIcon, to: '/admin/media', color: 'bg-cyan-500' },
+    { label: 'الصفحات', value: stats.pages, icon: FileText, to: '/admin/pages', color: 'bg-blue-500' },
+    { label: 'المنتجات', value: stats.products, icon: Package, to: '/admin/products', color: 'bg-emerald-500' },
+    { label: 'الأخبار', value: stats.news, icon: Newspaper, to: '/admin/news', color: 'bg-amber-500' },
+    { label: 'الفيديوهات', value: stats.videos, icon: Video, to: '/admin/videos', color: 'bg-rose-500' },
+    { label: 'المستشفيات', value: stats.hospitals, icon: Building2, to: '/admin/hospitals', color: 'bg-violet-500' },
+    { label: 'ملفات الوسائط', value: stats.media, icon: ImageIcon, to: '/admin/media', color: 'bg-cyan-500' },
   ];
 
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-foreground">Dashboard</h1>
-        <p className="text-muted-foreground mt-1">Overview of your site content</p>
+        <h1 className="text-3xl font-bold text-foreground">الرئيسية</h1>
+        <p className="text-muted-foreground mt-1">نظرة عامة على محتوى موقعك</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -77,11 +77,11 @@ const Dashboard: React.FC = () => {
       </div>
 
       <Card className="mt-8 p-6">
-        <h2 className="font-semibold text-foreground mb-2">Quick Tips</h2>
+        <h2 className="font-semibold text-foreground mb-2">نصائح سريعة</h2>
         <ul className="text-sm text-muted-foreground space-y-1.5 list-disc list-inside">
-          <li>Edit page sections from <strong>Pages & Sections</strong> – switch between 3 design layouts per section.</li>
-          <li>All changes appear on the live site instantly via Realtime.</li>
-          <li>Upload images in <strong>Media Library</strong> and reuse their URLs across the site.</li>
+          <li>قم بتعديل أقسام الصفحات من <strong>الصفحات والأقسام</strong> – بدّل بين 3 تصاميم لكل قسم.</li>
+          <li>كل التعديلات تظهر على الموقع المباشر فوراً عبر Realtime.</li>
+          <li>ارفع الصور في <strong>مكتبة الوسائط</strong> وأعد استخدام روابطها في الموقع.</li>
         </ul>
       </Card>
     </div>

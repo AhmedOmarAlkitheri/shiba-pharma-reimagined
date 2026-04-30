@@ -46,7 +46,7 @@ const SortableSection: React.FC<{
           {...attributes}
           {...listeners}
           className="cursor-grab active:cursor-grabbing p-1 hover:bg-background rounded"
-          title="Drag to reorder"
+          title="اسحب لإعادة الترتيب"
         >
           <GripVertical className="w-5 h-5 text-muted-foreground" />
         </button>
@@ -54,7 +54,7 @@ const SortableSection: React.FC<{
           {expanded ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
           <div>
             <h3 className="font-semibold capitalize">{sec.section_key}</h3>
-            <p className="text-xs text-muted-foreground">{sec.title_en || sec.title_ar || '—'}</p>
+            <p className="text-xs text-muted-foreground">{sec.title_ar || sec.title_en || '—'}</p>
           </div>
         </button>
         <div className="flex items-center gap-2">
@@ -64,7 +64,7 @@ const SortableSection: React.FC<{
             onCheckedChange={async (v) => {
               onUpdate({ is_visible: v });
               const { error } = await supabase.from('sections').update({ is_visible: v }).eq('id', sec.id);
-              if (error) toast.error(error.message); else toast.success('Visibility saved');
+              if (error) toast.error(error.message); else toast.success('تم حفظ الظهور');
             }}
           />
         </div>
@@ -73,14 +73,14 @@ const SortableSection: React.FC<{
           onValueChange={async (v) => {
             onUpdate({ layout_variant: v });
             const { error } = await supabase.from('sections').update({ layout_variant: v }).eq('id', sec.id);
-            if (error) toast.error(error.message); else toast.success(`Design changed → ${v}`);
+            if (error) toast.error(error.message); else toast.success(`تم تغيير التصميم → ${v}`);
           }}
         >
           <SelectTrigger className="w-32"><SelectValue /></SelectTrigger>
           <SelectContent>
-            <SelectItem value="design-1">Design 1</SelectItem>
-            <SelectItem value="design-2">Design 2</SelectItem>
-            <SelectItem value="design-3">Design 3</SelectItem>
+            <SelectItem value="design-1">تصميم 1</SelectItem>
+            <SelectItem value="design-2">تصميم 2</SelectItem>
+            <SelectItem value="design-3">تصميم 3</SelectItem>
           </SelectContent>
         </Select>
         <Button size="sm" onClick={onSave}><Save className="w-4 h-4" /></Button>
@@ -90,57 +90,57 @@ const SortableSection: React.FC<{
       {expanded && (
         <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label>Section Key</Label>
+            <Label>مفتاح القسم</Label>
             <Input value={sec.section_key} onChange={(e) => onUpdate({ section_key: e.target.value })} />
           </div>
           <div className="space-y-2">
-            <Label>Order</Label>
+            <Label>الترتيب</Label>
             <Input type="number" value={sec.display_order} onChange={(e) => onUpdate({ display_order: Number(e.target.value) })} />
           </div>
 
           <div className="space-y-2">
-            <Label>Title (EN)</Label>
+            <Label>العنوان (EN)</Label>
             <Input value={sec.title_en ?? ''} onChange={(e) => onUpdate({ title_en: e.target.value })} />
           </div>
           <div className="space-y-2">
-            <Label>Title (AR)</Label>
+            <Label>العنوان (AR)</Label>
             <Input dir="rtl" value={sec.title_ar ?? ''} onChange={(e) => onUpdate({ title_ar: e.target.value })} />
           </div>
           <div className="space-y-2">
-            <Label>Subtitle (EN)</Label>
+            <Label>العنوان الفرعي (EN)</Label>
             <Input value={sec.subtitle_en ?? ''} onChange={(e) => onUpdate({ subtitle_en: e.target.value })} />
           </div>
           <div className="space-y-2">
-            <Label>Subtitle (AR)</Label>
+            <Label>العنوان الفرعي (AR)</Label>
             <Input dir="rtl" value={sec.subtitle_ar ?? ''} onChange={(e) => onUpdate({ subtitle_ar: e.target.value })} />
           </div>
           <div className="space-y-2 md:col-span-2">
-            <Label>Description (EN)</Label>
+            <Label>الوصف (EN)</Label>
             <Textarea rows={3} value={sec.description_en ?? ''} onChange={(e) => onUpdate({ description_en: e.target.value })} />
           </div>
           <div className="space-y-2 md:col-span-2">
-            <Label>Description (AR)</Label>
+            <Label>الوصف (AR)</Label>
             <Textarea rows={3} dir="rtl" value={sec.description_ar ?? ''} onChange={(e) => onUpdate({ description_ar: e.target.value })} />
           </div>
           <div className="space-y-2">
-            <Label>Button Label (EN)</Label>
+            <Label>نص الزر (EN)</Label>
             <Input value={sec.button_label_en ?? ''} onChange={(e) => onUpdate({ button_label_en: e.target.value })} />
           </div>
           <div className="space-y-2">
-            <Label>Button Label (AR)</Label>
+            <Label>نص الزر (AR)</Label>
             <Input dir="rtl" value={sec.button_label_ar ?? ''} onChange={(e) => onUpdate({ button_label_ar: e.target.value })} />
           </div>
           <div className="space-y-2 md:col-span-2">
-            <Label>Button URL</Label>
+            <Label>رابط الزر</Label>
             <Input value={sec.button_url ?? ''} onChange={(e) => onUpdate({ button_url: e.target.value })} />
           </div>
           <div className="space-y-2">
-            <Label>Image</Label>
-            <MediaPicker value={sec.image_url} onChange={(url) => onUpdate({ image_url: url })} label="Image" />
+            <Label>الصورة</Label>
+            <MediaPicker value={sec.image_url} onChange={(url) => onUpdate({ image_url: url })} label="الصورة" />
           </div>
           <div className="space-y-2">
-            <Label>Background Image</Label>
-            <MediaPicker value={sec.background_url} onChange={(url) => onUpdate({ background_url: url })} label="Background" />
+            <Label>صورة الخلفية</Label>
+            <MediaPicker value={sec.background_url} onChange={(url) => onUpdate({ background_url: url })} label="الخلفية" />
           </div>
         </div>
       )}
@@ -180,14 +180,14 @@ const PagesAdmin: React.FC = () => {
   const saveSection = async (sec: SectionRow) => {
     const { id, page_id, ...rest } = sec;
     const { error } = await supabase.from('sections').update(rest).eq('id', id);
-    if (error) toast.error(error.message); else toast.success('Saved');
+    if (error) toast.error(error.message); else toast.success('تم الحفظ');
   };
 
   const deleteSection = async (id: string) => {
-    if (!confirm('Delete this section?')) return;
+    if (!confirm('حذف هذا القسم؟')) return;
     const { error } = await supabase.from('sections').delete().eq('id', id);
     if (error) return toast.error(error.message);
-    toast.success('Deleted');
+    toast.success('تم الحذف');
     if (activePageId) loadSections(activePageId);
   };
 
@@ -199,7 +199,7 @@ const PagesAdmin: React.FC = () => {
       title_en: 'New Section', title_ar: 'قسم جديد', display_order: order, is_visible: true,
     });
     if (error) return toast.error(error.message);
-    toast.success('Section added');
+    toast.success('تمت إضافة القسم');
     loadSections(activePageId);
   };
 
@@ -210,12 +210,11 @@ const PagesAdmin: React.FC = () => {
     const newIndex = sections.findIndex((s) => s.id === over.id);
     const reordered = arrayMove(sections, oldIndex, newIndex).map((s, i) => ({ ...s, display_order: i }));
     setSections(reordered);
-    // Persist new order
     const updates = reordered.map((s) =>
       supabase.from('sections').update({ display_order: s.display_order }).eq('id', s.id)
     );
     await Promise.all(updates);
-    toast.success('Order saved');
+    toast.success('تم حفظ الترتيب');
   };
 
   if (loading) return <Loader2 className="w-6 h-6 animate-spin" />;
@@ -224,17 +223,17 @@ const PagesAdmin: React.FC = () => {
     <div>
       <div className="flex justify-between items-center mb-6">
         <div>
-          <h1 className="text-3xl font-bold">Pages & Sections</h1>
-          <p className="text-sm text-muted-foreground mt-1">Drag sections to reorder. All edits push to the live site instantly.</p>
+          <h1 className="text-3xl font-bold">الصفحات والأقسام</h1>
+          <p className="text-sm text-muted-foreground mt-1">اسحب الأقسام لإعادة ترتيبها. كل التعديلات تُنشر على الموقع فوراً.</p>
         </div>
-        <Button onClick={addSection}><Plus className="w-4 h-4 mr-1" />Add Section</Button>
+        <Button onClick={addSection}><Plus className="w-4 h-4 mr-1" />إضافة قسم</Button>
       </div>
 
       <div className="flex flex-wrap gap-2 mb-6">
         {pages.map((p) => (
           <Button key={p.id} variant={activePageId === p.id ? 'default' : 'outline'}
             size="sm" onClick={() => setActivePageId(p.id)}>
-            {p.title_en} <span className="opacity-50 ml-2">/{p.slug}</span>
+            {p.title_ar || p.title_en} <span className="opacity-50 ml-2">/{p.slug}</span>
           </Button>
         ))}
       </div>
@@ -244,7 +243,7 @@ const PagesAdmin: React.FC = () => {
           <div className="space-y-3">
             {sections.length === 0 && (
               <Card className="p-8 text-center text-muted-foreground">
-                No sections yet. Click "Add Section" to start.
+                لا توجد أقسام بعد. اضغط "إضافة قسم" للبدء.
               </Card>
             )}
             {sections.map((sec) => (
