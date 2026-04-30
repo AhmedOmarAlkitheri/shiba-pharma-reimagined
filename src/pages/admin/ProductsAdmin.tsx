@@ -166,59 +166,59 @@ const ProductsAdmin: React.FC = () => {
     <div>
       <div className="flex justify-between items-center mb-6">
         <div>
-          <h1 className="text-3xl font-bold">Products</h1>
-          <p className="text-sm text-muted-foreground mt-1">Full management of every product field shown on the site.</p>
+          <h1 className="text-3xl font-bold">المنتجات</h1>
+          <p className="text-sm text-muted-foreground mt-1">إدارة كاملة لكل حقول المنتج المعروضة في الموقع.</p>
         </div>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
-            <Button onClick={() => { setEditing({ ...blank }); }}><Plus className="w-4 h-4 mr-1" />New Product</Button>
+            <Button onClick={() => { setEditing({ ...blank }); }}><Plus className="w-4 h-4 mr-1" />منتج جديد</Button>
           </DialogTrigger>
           <DialogContent className="max-w-5xl max-h-[92vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle>{editing?.id ? 'Edit Product' : 'New Product'}</DialogTitle>
+              <DialogTitle>{editing?.id ? 'تعديل المنتج' : 'منتج جديد'}</DialogTitle>
             </DialogHeader>
             {editing && (
               <Tabs defaultValue="basic">
                 <TabsList className="grid grid-cols-6 w-full">
-                  <TabsTrigger value="basic">Basic</TabsTrigger>
-                  <TabsTrigger value="medical">Medical</TabsTrigger>
-                  <TabsTrigger value="usage">Usage</TabsTrigger>
-                  <TabsTrigger value="safety">Safety</TabsTrigger>
-                  <TabsTrigger value="features">Features & Specs</TabsTrigger>
-                  <TabsTrigger value="meta">Meta</TabsTrigger>
+                  <TabsTrigger value="basic">الأساسية</TabsTrigger>
+                  <TabsTrigger value="medical">الطبية</TabsTrigger>
+                  <TabsTrigger value="usage">الاستعمال</TabsTrigger>
+                  <TabsTrigger value="safety">السلامة</TabsTrigger>
+                  <TabsTrigger value="features">المميزات والمواصفات</TabsTrigger>
+                  <TabsTrigger value="meta">الإعدادات</TabsTrigger>
                 </TabsList>
 
                 <TabsContent value="basic" className="space-y-4 pt-4">
                   <div className="grid md:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label>Name *</Label>
+                      <Label>الاسم *</Label>
                       <Input value={editing.name} onChange={(e) => setEditing({ ...editing, name: e.target.value })} />
                     </div>
                     <div className="space-y-2">
-                      <Label>Slug *</Label>
+                      <Label>المعرّف (Slug) *</Label>
                       <Input value={editing.slug} onChange={(e) => setEditing({ ...editing, slug: e.target.value })} />
                     </div>
                     <div className="space-y-2 md:col-span-2">
-                      <Label>Category</Label>
+                      <Label>الفئة</Label>
                       <Select value={editing.category_id ?? 'none'}
                         onValueChange={(v) => setEditing({ ...editing, category_id: v === 'none' ? null : v })}>
-                        <SelectTrigger><SelectValue placeholder="Select category" /></SelectTrigger>
+                        <SelectTrigger><SelectValue placeholder="اختر فئة" /></SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="none">— None —</SelectItem>
+                          <SelectItem value="none">— بدون —</SelectItem>
                           {categories.map((c) => <SelectItem key={c.id} value={c.id}>{c.name_en}</SelectItem>)}
                         </SelectContent>
                       </Select>
                     </div>
                     <div className="space-y-2 md:col-span-2">
-                      <Label>Main Image</Label>
+                      <Label>الصورة الرئيسية</Label>
                       <MediaPicker value={editing.image_url} onChange={(url) => setEditing({ ...editing, image_url: url })} />
                     </div>
                     <div className="space-y-2 md:col-span-2">
-                      <Label>Description (EN)</Label>
+                      <Label>الوصف (EN)</Label>
                       <Textarea rows={3} value={editing.description_en ?? ''} onChange={(e) => setEditing({ ...editing, description_en: e.target.value })} />
                     </div>
                     <div className="space-y-2 md:col-span-2">
-                      <Label>Description (AR)</Label>
+                      <Label>الوصف (AR)</Label>
                       <Textarea rows={3} dir="rtl" value={editing.description_ar ?? ''} onChange={(e) => setEditing({ ...editing, description_ar: e.target.value })} />
                     </div>
                   </div>
@@ -226,59 +226,59 @@ const ProductsAdmin: React.FC = () => {
 
                 <TabsContent value="medical" className="space-y-4 pt-4">
                   <div className="grid md:grid-cols-2 gap-4">
-                    <div className="space-y-2"><Label>Composition (EN)</Label>
+                    <div className="space-y-2"><Label>التركيبة (EN)</Label>
                       <Textarea rows={3} value={editing.composition_en ?? ''} onChange={(e) => setEditing({ ...editing, composition_en: e.target.value })} /></div>
-                    <div className="space-y-2"><Label>Composition (AR)</Label>
+                    <div className="space-y-2"><Label>التركيبة (AR)</Label>
                       <Textarea rows={3} dir="rtl" value={editing.composition_ar ?? ''} onChange={(e) => setEditing({ ...editing, composition_ar: e.target.value })} /></div>
-                    <div className="space-y-2"><Label>Indication (EN)</Label>
+                    <div className="space-y-2"><Label>دواعي الاستعمال (EN)</Label>
                       <Textarea rows={3} value={editing.indication_en ?? ''} onChange={(e) => setEditing({ ...editing, indication_en: e.target.value })} /></div>
-                    <div className="space-y-2"><Label>Indication (AR)</Label>
+                    <div className="space-y-2"><Label>دواعي الاستعمال (AR)</Label>
                       <Textarea rows={3} dir="rtl" value={editing.indication_ar ?? ''} onChange={(e) => setEditing({ ...editing, indication_ar: e.target.value })} /></div>
                   </div>
                 </TabsContent>
 
                 <TabsContent value="usage" className="space-y-4 pt-4">
                   <div className="grid md:grid-cols-2 gap-4">
-                    <div className="space-y-2"><Label>Dosage (EN)</Label>
+                    <div className="space-y-2"><Label>الجرعة (EN)</Label>
                       <Textarea rows={3} value={editing.dosage_en ?? ''} onChange={(e) => setEditing({ ...editing, dosage_en: e.target.value })} /></div>
-                    <div className="space-y-2"><Label>Dosage (AR)</Label>
+                    <div className="space-y-2"><Label>الجرعة (AR)</Label>
                       <Textarea rows={3} dir="rtl" value={editing.dosage_ar ?? ''} onChange={(e) => setEditing({ ...editing, dosage_ar: e.target.value })} /></div>
-                    <div className="space-y-2"><Label>Storage (EN)</Label>
+                    <div className="space-y-2"><Label>التخزين (EN)</Label>
                       <Textarea rows={3} value={editing.storage_en ?? ''} onChange={(e) => setEditing({ ...editing, storage_en: e.target.value })} /></div>
-                    <div className="space-y-2"><Label>Storage (AR)</Label>
+                    <div className="space-y-2"><Label>التخزين (AR)</Label>
                       <Textarea rows={3} dir="rtl" value={editing.storage_ar ?? ''} onChange={(e) => setEditing({ ...editing, storage_ar: e.target.value })} /></div>
-                    <div className="space-y-2"><Label>Packaging (EN)</Label>
+                    <div className="space-y-2"><Label>التغليف (EN)</Label>
                       <Input value={editing.packaging_en ?? ''} onChange={(e) => setEditing({ ...editing, packaging_en: e.target.value })} /></div>
-                    <div className="space-y-2"><Label>Packaging (AR)</Label>
+                    <div className="space-y-2"><Label>التغليف (AR)</Label>
                       <Input dir="rtl" value={editing.packaging_ar ?? ''} onChange={(e) => setEditing({ ...editing, packaging_ar: e.target.value })} /></div>
                   </div>
                 </TabsContent>
 
                 <TabsContent value="safety" className="space-y-4 pt-4">
                   <div className="grid md:grid-cols-2 gap-4">
-                    <div className="space-y-2"><Label>Side Effects (EN)</Label>
+                    <div className="space-y-2"><Label>الآثار الجانبية (EN)</Label>
                       <Textarea rows={3} value={editing.side_effects_en ?? ''} onChange={(e) => setEditing({ ...editing, side_effects_en: e.target.value })} /></div>
-                    <div className="space-y-2"><Label>Side Effects (AR)</Label>
+                    <div className="space-y-2"><Label>الآثار الجانبية (AR)</Label>
                       <Textarea rows={3} dir="rtl" value={editing.side_effects_ar ?? ''} onChange={(e) => setEditing({ ...editing, side_effects_ar: e.target.value })} /></div>
-                    <div className="space-y-2"><Label>Contraindications (EN)</Label>
+                    <div className="space-y-2"><Label>موانع الاستعمال (EN)</Label>
                       <Textarea rows={3} value={editing.contraindications_en ?? ''} onChange={(e) => setEditing({ ...editing, contraindications_en: e.target.value })} /></div>
-                    <div className="space-y-2"><Label>Contraindications (AR)</Label>
+                    <div className="space-y-2"><Label>موانع الاستعمال (AR)</Label>
                       <Textarea rows={3} dir="rtl" value={editing.contraindications_ar ?? ''} onChange={(e) => setEditing({ ...editing, contraindications_ar: e.target.value })} /></div>
-                    <div className="space-y-2"><Label>Warnings (EN)</Label>
+                    <div className="space-y-2"><Label>التحذيرات (EN)</Label>
                       <Textarea rows={2} value={editing.warnings_en ?? ''} onChange={(e) => setEditing({ ...editing, warnings_en: e.target.value })} /></div>
-                    <div className="space-y-2"><Label>Warnings (AR)</Label>
+                    <div className="space-y-2"><Label>التحذيرات (AR)</Label>
                       <Textarea rows={2} dir="rtl" value={editing.warnings_ar ?? ''} onChange={(e) => setEditing({ ...editing, warnings_ar: e.target.value })} /></div>
-                    <div className="space-y-2"><Label>Drug Interactions (EN)</Label>
+                    <div className="space-y-2"><Label>التداخلات الدوائية (EN)</Label>
                       <Textarea rows={2} value={editing.interactions_en ?? ''} onChange={(e) => setEditing({ ...editing, interactions_en: e.target.value })} /></div>
-                    <div className="space-y-2"><Label>Drug Interactions (AR)</Label>
+                    <div className="space-y-2"><Label>التداخلات الدوائية (AR)</Label>
                       <Textarea rows={2} dir="rtl" value={editing.interactions_ar ?? ''} onChange={(e) => setEditing({ ...editing, interactions_ar: e.target.value })} /></div>
-                    <div className="space-y-2"><Label>Pregnancy & Lactation (EN)</Label>
+                    <div className="space-y-2"><Label>الحمل والرضاعة (EN)</Label>
                       <Textarea rows={2} value={editing.pregnancy_en ?? ''} onChange={(e) => setEditing({ ...editing, pregnancy_en: e.target.value })} /></div>
-                    <div className="space-y-2"><Label>Pregnancy & Lactation (AR)</Label>
+                    <div className="space-y-2"><Label>الحمل والرضاعة (AR)</Label>
                       <Textarea rows={2} dir="rtl" value={editing.pregnancy_ar ?? ''} onChange={(e) => setEditing({ ...editing, pregnancy_ar: e.target.value })} /></div>
-                    <div className="space-y-2"><Label>Overdose (EN)</Label>
+                    <div className="space-y-2"><Label>الجرعة الزائدة (EN)</Label>
                       <Textarea rows={2} value={editing.overdose_en ?? ''} onChange={(e) => setEditing({ ...editing, overdose_en: e.target.value })} /></div>
-                    <div className="space-y-2"><Label>Overdose (AR)</Label>
+                    <div className="space-y-2"><Label>الجرعة الزائدة (AR)</Label>
                       <Textarea rows={2} dir="rtl" value={editing.overdose_ar ?? ''} onChange={(e) => setEditing({ ...editing, overdose_ar: e.target.value })} /></div>
                   </div>
                 </TabsContent>
@@ -286,25 +286,25 @@ const ProductsAdmin: React.FC = () => {
                 <TabsContent value="features" className="space-y-6 pt-4">
                   <div className="grid md:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label>Key Features (EN)</Label>
-                      <ListEditor items={editing.features_en ?? []} onChange={(v) => setEditing({ ...editing, features_en: v })} placeholder="Add feature..." />
+                      <Label>المميزات الرئيسية (EN)</Label>
+                      <ListEditor items={editing.features_en ?? []} onChange={(v) => setEditing({ ...editing, features_en: v })} placeholder="أضف ميزة..." />
                     </div>
                     <div className="space-y-2">
-                      <Label>Key Features (AR)</Label>
+                      <Label>المميزات الرئيسية (AR)</Label>
                       <ListEditor items={editing.features_ar ?? []} onChange={(v) => setEditing({ ...editing, features_ar: v })} placeholder="أضف ميزة..." rtl />
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <Label>Specifications</Label>
+                    <Label>المواصفات</Label>
                     <SpecsEditor specs={editing.specifications ?? []} onChange={(v) => setEditing({ ...editing, specifications: v })} />
                   </div>
                   <div className="grid md:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label>Certifications</Label>
+                      <Label>الشهادات</Label>
                       <ListEditor items={editing.certifications ?? []} onChange={(v) => setEditing({ ...editing, certifications: v })} placeholder="WHO-GMP, ISO 9001..." />
                     </div>
                     <div className="space-y-2">
-                      <Label>Image Gallery</Label>
+                      <Label>معرض الصور</Label>
                       <GalleryEditor urls={editing.gallery_urls ?? []} onChange={(v) => setEditing({ ...editing, gallery_urls: v })} />
                     </div>
                   </div>
@@ -313,21 +313,21 @@ const ProductsAdmin: React.FC = () => {
                 <TabsContent value="meta" className="space-y-4 pt-4">
                   <div className="grid md:grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <Label>Display Order</Label>
+                      <Label>ترتيب العرض</Label>
                       <Input type="number" value={editing.display_order} onChange={(e) => setEditing({ ...editing, display_order: Number(e.target.value) })} />
                     </div>
                     <div className="flex items-center gap-3 pt-7">
                       <Switch checked={editing.is_published} onCheckedChange={(v) => setEditing({ ...editing, is_published: v })} />
-                      <Label>Published</Label>
+                      <Label>منشور</Label>
                     </div>
                     <div className="flex items-center gap-3 pt-2">
                       <Switch checked={editing.is_featured} onCheckedChange={(v) => setEditing({ ...editing, is_featured: v })} />
-                      <Label>Featured</Label>
+                      <Label>مميز</Label>
                     </div>
                   </div>
                 </TabsContent>
 
-                <Button className="w-full mt-4" onClick={save}>Save Product</Button>
+                <Button className="w-full mt-4" onClick={save}>حفظ المنتج</Button>
               </Tabs>
             )}
           </DialogContent>
@@ -335,7 +335,7 @@ const ProductsAdmin: React.FC = () => {
       </div>
 
       <Card className="p-4 mb-4">
-        <Input placeholder="Search by name or slug..." value={search} onChange={(e) => setSearch(e.target.value)} />
+        <Input placeholder="ابحث بالاسم أو المعرّف..." value={search} onChange={(e) => setSearch(e.target.value)} />
       </Card>
 
       {loading ? <Loader2 className="w-6 h-6 animate-spin" /> : (
@@ -352,7 +352,7 @@ const ProductsAdmin: React.FC = () => {
                   <div className="flex items-center gap-2">
                     <p className="font-medium truncate">{p.name}</p>
                     {p.is_featured && <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />}
-                    {!p.is_published && <span className="text-xs px-1.5 py-0.5 rounded bg-muted text-muted-foreground">Draft</span>}
+                    {!p.is_published && <span className="text-xs px-1.5 py-0.5 rounded bg-muted text-muted-foreground">مسودة</span>}
                   </div>
                   <p className="text-xs text-muted-foreground truncate">/{p.slug}</p>
                 </div>
@@ -360,7 +360,7 @@ const ProductsAdmin: React.FC = () => {
                 <Button size="sm" variant="outline" onClick={() => remove(p.id)}><Trash2 className="w-3 h-3 text-destructive" /></Button>
               </div>
             ))}
-            {filtered.length === 0 && <p className="text-center py-8 text-muted-foreground">No products found.</p>}
+            {filtered.length === 0 && <p className="text-center py-8 text-muted-foreground">لا توجد منتجات.</p>}
           </div>
         </Card>
       )}
