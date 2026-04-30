@@ -59,9 +59,23 @@ const SortableSection: React.FC<{
         </button>
         <div className="flex items-center gap-2">
           {sec.is_visible ? <Eye className="w-4 h-4 text-emerald-500" /> : <EyeOff className="w-4 h-4 text-muted-foreground" />}
-          <Switch checked={sec.is_visible} onCheckedChange={(v) => onUpdate({ is_visible: v })} />
+          <Switch
+            checked={sec.is_visible}
+            onCheckedChange={async (v) => {
+              onUpdate({ is_visible: v });
+              const { error } = await supabase.from('sections').update({ is_visible: v }).eq('id', sec.id);
+              if (error) toast.error(error.message); else toast.success('Visibility saved');
+            }}
+          />
         </div>
-        <Select value={sec.layout_variant} onValueChange={(v) => onUpdate({ layout_variant: v })}>
+        <Select
+          value={sec.layout_variant}
+          onValueChange={async (v) => {
+            onUpdate({ layout_variant: v });
+            const { error } = await supabase.from('sections').update({ layout_variant: v }).eq('id', sec.id);
+            if (error) toast.error(error.message); else toast.success(`Design changed → ${v}`);
+          }}
+        >
           <SelectTrigger className="w-32"><SelectValue /></SelectTrigger>
           <SelectContent>
             <SelectItem value="design-1">Design 1</SelectItem>
